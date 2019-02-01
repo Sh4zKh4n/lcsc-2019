@@ -184,11 +184,12 @@ p &< q \implies ap < aq \implies z = v
 ** Smallest C++ program
       
 #+BEGIN_SRC cpp 
-int main() {} // return 0;
+int main() { return 0; }
 #+END_SRC
 
 - The =main= function is called when the C++ program is executed. One main function across all your source files!
 
+- =int main() {}= is actually also a valid C++ program
 ** Output
 
 #+BEGIN_SRC cpp 
@@ -257,7 +258,7 @@ x++;
 #+END_SRC
 ** Constants
 #+BEGIN_SRC cpp 
-const x = 3;
+const auto x = 3;
 x = 5; // ERROR!
 #+END_SRC
 ** Control flow statements
@@ -298,12 +299,6 @@ int* ys = nullptr; // pointer to int
 int* x = &x[3]; // address of 4th element
 int y = *x; // y = contents of x
 #+END_SRC
-
-
-draw array of size 6, pointer to 3
-
-talk about dangers of pointers..!
-
 ** Structures
 
 #+BEGIN_SRC cpp 
@@ -314,7 +309,7 @@ struct lcrng {
 };
 #+END_SRC
 
-user defined type!
+- *User defined type*!
 
 #+BEGIN_SRC cpp 
 int next(lcrng generator, int x) {
@@ -350,3 +345,8 @@ while the song I came to sing remains unsung.”
 - Your code must be written in /standard C++/, and be buildable with a common
   cross-platform build tool (more on this in the upcoming weeks).
 
+** This week
+- Set up programming environment
+- Compile and run ``Hello, world!''
+- Write a simple LCRNG function
+- Exercises from lecture notes..?
