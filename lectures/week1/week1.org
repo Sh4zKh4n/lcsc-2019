@@ -1,0 +1,340 @@
+#+TITLE: Laboratory Class Scientific Computing WISM454, 2019
+#+AUTHOR: Jan-Willem Buurlage
+#+EMAIL: j.buurlage@cwi.nl
+
+# Beamer specific:
+#+startup: beamer
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [10pt]
+#+BEAMER_FRAME_LEVEL: 2
+#+BEAMER_THEME: metropolis [progressbar=head]
+#+OPTIONS: H:2
+#+OPTIONS: toc:nil
+
+# CI CWI theme specific:
+#+LATEX_HEADER: \usepackage{tikz}
+#+LATEX_HEADER: \definecolor{cwiRed}{HTML}{BF1238}
+#+LATEX_HEADER: \definecolor{cwiBlue}{HTML}{0B5D7D}
+#+LATEX_HEADER: \setbeamertemplate{footline}[text line]{%
+#+LATEX_HEADER:   \parbox{\linewidth}{\noindent\vspace*{2pt}\noindent\rule{\linewidth}{0.4pt}\\{\scriptsize\noindent\vspace*{7pt}\insertshortauthor\hfill\insertshorttitle\hfill\insertdate}}
+#+LATEX_HEADER: }
+#+LATEX_HEADER: \renewcommand*\footnoterule{}
+#+LATEX_HEADER: \usepackage{lmodern}
+
+* Organization
+** Expectations
+- Develop *scientific software* using C++ 
+- Reason about *code performance*
+- Perform and report *numerical experiments*
+- Write *coherent and concise reports*
+- Learn about random number generators, Monte Carlo methods, and genetic
+  algorithms.
+** Grading
+- Hand-in assignments.
+- Two $\pm 20$ page reports containing:
+  - Exercise solutions
+  - Overview and explanation of code
+  - Numerical experiments.
+- How the final grade is computed:
+  - **Assignments:** 20%
+  - **Report I:** 40%
+  - **Report II:** 40%
+- The focus of the course is on developing programming skills, and writing good
+  reports.
+** Topics
+- *Randomized algorithms and tools*
+  1. Random number generation
+  2. Monte Carlo methods
+  3. Genetic algorithms
+- Introduction to C++, for developing *high-performance code*
+- Software engineering skills, software architecture, *scientific programming*
+* Random number generators
+** RNGs
+- Random number generator (RNG): *A means to get uniformly distributed numbers.*
+- We focus on obtaining numbers in the set:
+  $$M = \{ 0, 1, \ldots, m - 1 \}.$$
+- An RNG can be a physical device, process, or a algorithm.
+** Pseudo RNGs
+- For scientific computing, we value the following properties in our RNG
+  - *Randomness*
+  - *Reproducibility*
+  - *Efficiency*
+- We focus on computer based RNGs, which are deterministic, and thus called
+  pseudo-RNGs (PRNGs).
+** Iterations
+- Classic PRNGs have the form:
+  $$x_{i + 1} = f(x_i).$$
+  The next iterate of a sequence of random numbers produced by PRNGs of this form depend completely on the previous iterate.
+- We start the sequence by choosing an initial number $x_0$? This is called the *seed*.
+** Real numbers
+- Say we want numbers not in $M$ but in $[0, 1]$. We can scale:
+$$\omega_i \equiv \frac{x_i}{m - 1}.$$
+
+- _Ex. 2.1_: or should we scale in another way?
+- The usual strategy is to have an *engine* that generates integers uniformly. Using these
+  random integers, other *distributions* can be realized.
+** Linear congruential RNG
+- The *linear congruential RNG* (LCRNG) has the following form for $f$:
+  $$f(x) = (a x + c) \bmod m.$$
+- Here, $a$, $c$, and $m$ are integer parameters that define the LCRNG.
+- Easy to implement, but have some drawbacks.
+** Example:
+- Let us choose: $a = 5, c = 2, m = 6, x_0 = 3$
+- $(5 \times 3 + 2) \bmod 6 = 5$
+- And then the next element in the sequence is ... again $3$
+- Although there are $m$ possible output numbers, we can have *repeating cycles*
+  like here (3, 5, 3, 5, 3, 5, ...).
+
+- (Question: should we include the seed in the sequence?)
+
+** Period of LCRNG
+\begin{definition}
+The smallest $n$ such that $x_{i + n} = x_i$ is called the period of the LCRNG. If $n = m$, then full period.
+\end{definition}
+
+- _Ex 2.2_: what if $c = 0$?
+
+- Full period means that the LCRNG gives a permutation of $M$.
+
+- /True/ uniform distributions would likely produce the same numbers *multiple
+  times without repeating*.
+
+- Numbers may become very large. We want to use the maximum $m$ that we can
+  *still represent efficiently on the computer*.
+** Binary numbers on computers
+
+- Unsigned integers are stored in 32 bits (= 4 bytes) / 64 bits.
+$$x = \sum_{i = 0}^{n - 1} b_i 2^i.$$
+\begin{align*}
+2 &= 10_2 \\
+5 &= 110_2 \\
+23 &= 10111_2
+\end{align*}
+
+- Least significant (right), most significant (left).
+- Addition throws away most significant bits (overflow). *Arithmetic operations
+  on $n\text{-bit}$ integers are like working modulo $2^n$*!
+
+** Negative numbers
+
+Signed integers. Left most bit 'sign bit', if zero then positive, if one then negative. But in a smart way!
+
+$$\{ 0, \ldots (2^{n-1} - 1), -2^{n-1}, \ldots, -1 \}.$$
+
+** Two's complement encoding.
+
+$(-a)_\text{s} \equiv (2^n - a)_{\text{u}}$
+
+- *Note:* $2^n - a \equiv (2^n - 1) - a + 1$.
+
+- *Summary*: $-a$: invert all bits of $a$ and add $1$.
+
+\begin{align*}
+(x + (-y)_{\text{u}}) \bmod 2^n &= (x + 2^n - 1 - y + 1) \bmod 2^n\\
+&= (x - y) \bmod 2^n.
+\end{align*}
+
+** Shrage's trick
+
+Now that we are a bit familiar with binary representation of numbers on computers, we consider possible issues.
+
+_Ex 2.4_: $m = 2^b, c \neq 0 \implies$ not random in all bits
+
+Interested in $m = p$ prime, $c = 0$:
+$$f(x) = ax \bmod m.$$
+However, what if $ax$ overflows? If $m = aq$ then:
+$$ax \bmod m = ax \bmod aq = a (x \bmod q).$$
+(note that this is smaller then $m$)
+
+** Shrage's trick (II)
+
+However, we would like $m$ prime... say $m = aq + r$ with $r$ small, then it turns out (try to prove this for your report)
+\begin{align*}
+b \equiv a (x \bmod q) - r (x~\text{div}~q) \\
+ax \bmod m = \begin{cases}
+b & \text{ if } b \geq 0 \\
+b + m & \text{otherwise}
+\end{cases}
+\end{align*}
+and if $r < q$ all numbers involved are less than $m$, so we can compute without overflow.
+
+** Trick proof
+_Proof_ of simple trick:
+\begin{align*}
+ax &= z(aq) + r \\
+x &= v(q) + p \\
+ax &= avq + ap \\
+p &< q \implies ap < aq \implies z = v
+\end{align*}
+
+* C++
+** C++
+
+- Compiled language! (Who has programmed before, what language?)
+
+- sources -> compile all -> object files -> link -> executable
+
+- Source code is *portable*, but *executable* generally is not (contrary to e.g. Java)
+- *Language features*
+    - types, functions, control flow statements
+- *Standard library*
+    - containers, IO operations, ...
+    - implemented using language features (could build this yourself on top of C++!)
+
+** Smallest C++ program
+      
+#+BEGIN_SRC cpp 
+int main() {} // return 0;
+#+END_SRC
+
+- The =main= function is called when the C++ program is executed. One main function across all your source files!
+
+** Output
+
+#+BEGIN_SRC cpp 
+#include <iostream>
+
+int main() {
+    // console out
+    // read << as 'put to'
+    // std is a namespace
+    std::cout << "Hello, world!\n";
+}
+#+END_SRC
+
+Note: *semicolon* ;
+
+** Types
+
+Every entity has a type, which determines what is valid for that entity. Types are used e.g. to denote the type of the return value of a function (as in main), or its parameters.
+
+#+BEGIN_SRC cpp 
+int square(int x) {
+    return x;
+}
+
+...
+
+std::cout << square(3) << "\n";
+#+END_SRC
+
+** Built-in types
+There are a number of 'fundamental' (not user-defined) types.
+
+- =bool= (1)
+- =char= (1)
+- =int= (4)
+- =double= (8)
+
+#+BEGIN_SRC cpp 
+int x = 3;
+int z = x + 5; // FINE!
+bool a = false;
+bool b = a + 3; // ERROR!
+#+END_SRC
+
+** Caveats
+#+BEGIN_SRC cpp 
+int b = 7.1; // no error!
+float a = 3.0;
+float a = 312489012480918240.0;
+float a = 3124.0f;
+#+END_SRC
+** Narrowing
+Lenient with conversions (narrowing!), can be dangerous. C++11:
+#+BEGIN_SRC cpp 
+int b{7.1}; // error!
+float a{3.0} // error!
+auto a = 12345.0; // a is a double!
+#+END_SRC
+(I generally use =auto= everywhere, and if necessary annotate on the right).
+
+Some useful operations:
+#+BEGIN_SRC cpp 
+x += y; // - * / %
+++x;
+x++;
+#+END_SRC
+** Constants
+#+BEGIN_SRC cpp 
+const x = 3;
+x = 5; // ERROR!
+#+END_SRC
+** Control flow statements
+#+BEGIN_SRC cpp 
+  int x = 2;
+
+  if (x > 3) {
+      f();
+  } else {
+      g();
+  }
+
+  while (x < 3) {
+      x += 1;
+  }
+#+END_SRC
+** For loop
+#+BEGIN_SRC cpp
+
+  // this
+  for (int i = 0; i < 5; ++i) {
+      std::cout << i << "\n";
+  }
+  // is equivalent to
+  int i = 0;
+  while (i < 5) {
+      std::cout << i << "\n";
+
+      ++i;
+  }
+#+END_SRC
+
+** Pointers, arrays
+
+#+BEGIN_SRC cpp
+int xs[6] = {0, 1, 2, 3, 4, 5}; // array of ints
+int* ys = nullptr; // pointer to int
+int* x = &x[3]; // address of 4th element
+int y = *x; // y = contents of x
+#+END_SRC
+
+
+draw array of size 6, pointer to 3
+
+talk about dangers of pointers..!
+
+** Structures
+
+#+BEGIN_SRC cpp 
+struct lcrng {
+    int a;
+    int c;
+    int m;
+};
+#+END_SRC
+
+user defined type!
+
+#+BEGIN_SRC cpp 
+int next(lcrng generator, int x) {
+    // ... (generator.a)
+}
+#+END_SRC
+
+** Programming environment
+#+attr_latex: :width 100px
+[[./tagore.jpg]]
+
+#+BEGIN_QUOTATION
+“I have spent many days stringing and unstringing my instrument 
+while the song I came to sing remains unsung.”
+
+― /Rabindranath Tagore/
+#+END_QUOTATION
+** Minimal programming environment
+- /Windows/
+  - *Notepad++* + *MinGW* + *CygWin*
+- /Linux/
+  - *gedit* + *GCC*
+
