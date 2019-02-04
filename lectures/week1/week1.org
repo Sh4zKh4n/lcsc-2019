@@ -23,12 +23,12 @@
 
 * Organization
 ** Expectations
-- Develop *scientific software* using C++ 
-- Reason about *code performance*
-- Perform and report *numerical experiments*
-- Write *coherent and concise reports*
-- Learn about random number generators, Monte Carlo methods, and genetic
-  algorithms.
+- Learn about /random number generators/, /Monte Carlo methods/, and /genetic
+  algorithms/.
+- Develop *scientific software* using C++.
+- Perform *numerical experiments*.
+- Write *coherent and concise reports*.
+- Reason about *code performance*.
 ** Grading
 - Hand-in assignments.
 - Two $\pm 20$ page reports containing:
@@ -39,8 +39,8 @@
   - **Assignments:** 20%
   - **Report I:** 40%
   - **Report II:** 40%
-- The focus of the course is on developing programming skills, and writing good
-  reports.
+- The focus of the course is on developing your programming skills, and writing
+  good reports.
 ** Topics
 - *Randomized algorithms and tools*
   1. Random number generation
@@ -59,13 +59,14 @@
   - *Randomness*
   - *Reproducibility*
   - *Efficiency*
-- We focus on computer based RNGs, which are deterministic, and thus called
-  pseudo-RNGs (PRNGs).
+- We focus on computer based RNGs, which are deterministic.
+- Deterministic seems paradoxical, usually called pseudo-RNGs (PRNGs).
 ** Iterations
 - Classic PRNGs have the form:
   $$x_{i + 1} = f(x_i).$$
   The next iterate of a sequence of random numbers produced by PRNGs of this form depend completely on the previous iterate.
-- We start the sequence by choosing an initial number $x_0$? This is called the *seed*.
+- We start the sequence by choosing an initial number $x_0$. This is called the *seed*.
+- If you use the same seed, you get the same sequence $\implies$ reproducible.
 ** Real numbers
 - Say we want numbers not in $M$ but in $[0, 1]$. We can scale:
 $$\omega_i \equiv \frac{x_i}{m - 1}.$$
@@ -102,63 +103,60 @@ The smallest $n$ such that $x_{i + n} = x_i$ is called the period of the LCRNG. 
 - Numbers may become very large. We want to use the maximum $m$ that we can
   *still represent efficiently on the computer*.
 ** Binary numbers on computers
-
-- Unsigned integers are stored in 32 bits (= 4 bytes) / 64 bits.
+- Unsigned integers are typically stored in 32 bits (= 4 bytes) or 64 bits.
 $$x = \sum_{i = 0}^{n - 1} b_i 2^i.$$
-\begin{align*}
-2 &= 10_2 \\
-5 &= 110_2 \\
-23 &= 10111_2
-\end{align*}
-
+- Some examples:
+  \begin{align*}
+  2 &= 10_2 \\
+  5 &= 110_2 \\
+  23 &= 10111_2
+  \end{align*}
 - Least significant (right), most significant (left).
 - Addition throws away most significant bits (overflow). *Arithmetic operations
   on $n\text{-bit}$ integers are like working modulo $2^n$*!
-
 ** Negative numbers
-
-Signed integers. Left most bit 'sign bit', if zero then positive, if one then negative. But in a smart way!
-
+- Signed integers. Most significant bit is the *sign bit*.
+- If the sign bit is 0 then the number is positive, if it is 1 then it is
+  negative.
+- However, it is done in a smart way called *two's complement encoding*!
+  Corresponding to the following sequence:
 $$\{ 0, \ldots (2^{n-1} - 1), -2^{n-1}, \ldots, -1 \}.$$
-
 ** Two's complement encoding.
-
-$(-a)_\text{s} \equiv (2^n - a)_{\text{u}}$
-
-- *Note:* $2^n - a \equiv (2^n - 1) - a + 1$.
-
-- *Summary*: $-a$: invert all bits of $a$ and add $1$.
-
-\begin{align*}
-(x + (-y)_{\text{u}}) \bmod 2^n &= (x + 2^n - 1 - y + 1) \bmod 2^n\\
-&= (x - y) \bmod 2^n.
-\end{align*}
-
+- Signed versus unsigned:
+  $$(-a)_\text{s} \equiv (2^n - a)_{\text{u}}$$
+- *Note:* $2^n - a \equiv (2^n - 1) - a + 1$, so in *summary*: $-a$: invert all
+  bits of $a$ and add $1$.
+- Subtraction can then be implemented by addition.
+  \begin{align*}
+  (x + (-y)_{\text{u}}) \bmod 2^n &= (x + 2^n - 1 - y + 1) \bmod 2^n\\
+  &= (x - y) \bmod 2^n.
+  \end{align*}
 ** Shrage's trick
-
-Now that we are a bit familiar with binary representation of numbers on computers, we consider possible issues.
+- Now that we are a bit familiar with binary representation of numbers on computers, we consider possible issues.
 
 _Ex 2.4_: $m = 2^b, c \neq 0 \implies$ not random in all bits
 
-Interested in $m = p$ prime, $c = 0$:
-$$f(x) = ax \bmod m.$$
-However, what if $ax$ overflows? If $m = aq$ then:
-$$ax \bmod m = ax \bmod aq = a (x \bmod q).$$
-(note that this is smaller then $m$)
-
+- For this reason, we want $m = p$ prime, if $c = 0$:
+  $$f(x) = ax \bmod m.$$
+  However, what if $ax$ *overflows*?
+- If we could factorize $m = aq$ then:
+  $$ax \bmod m = ax \bmod aq = a (x \bmod q).$$
+  (note that this is always smaller then $m$)
 ** Shrage's trick (II)
 
-However, we would like $m$ prime... say $m = aq + r$ with $r$ small, then it turns out (try to prove this for your report)
-\begin{align*}
-b \equiv a (x \bmod q) - r (x~\text{div}~q) \\
-ax \bmod m = \begin{cases}
-b & \text{ if } b \geq 0 \\
-b + m & \text{otherwise}
-\end{cases}
-\end{align*}
-and if $r < q$ all numbers involved are less than $m$, so we can compute without overflow.
+- However, we would like $m$ prime...
+- Assume $m = aq + r$ with $r$ small, then (try to prove this for your report):
+  \begin{align*}
+  b \equiv a (x \bmod q) - r (x~\text{div}~q) \\
+  ax \bmod m = \begin{cases}
+  b & \text{ if } b \geq 0 \\
+  b + m & \text{otherwise}
+  \end{cases}
+  \end{align*}
+  and if $r < q$ all numbers involved are less than $m$, so we can compute without overflow.
+- This is called *Shrage's trick*
 
-** Trick proof
+** COMMENT Trick proof
 _Proof_ of simple trick:
 \begin{align*}
 ax &= z(aq) + r \\
@@ -167,20 +165,25 @@ ax &= avq + ap \\
 p &< q \implies ap < aq \implies z = v
 \end{align*}
 
+** Summary
+- An *RNG engine* generates numbers in the set:
+  $$M = \{0, 1, \ldots, m - 1\}.$$
+- For *scientific experiments*, we want reproducibility, efficiency and
+  randomness.
+- *LCRNGs* are simple generators that can generate pseudo-random
+  sequences.
+- Correct implementations require you to be aware of how integers are *encoded* in
+  your computer.
 * C++
 ** C++
-
-- Compiled language! (Who has programmed before, what language?)
-
-- sources -> compile all -> object files -> link -> executable
-
-- Source code is *portable*, but *executable* generally is not (contrary to e.g. Java)
+- Compiled language!
+  - /source(s)/ $\to$ *_compile_* $\to$ /object file(s)/ $\to$ *_link_* $\to$ /single executable/
+- Source code is portable, but the executable generally is not (contrary to e.g. Java)
 - *Language features*
-    - types, functions, control flow statements
+  - types, functions, control flow statements
 - *Standard library*
-    - containers, IO operations, ...
-    - implemented using language features (could build this yourself on top of C++!)
-
+  - containers, IO operations, ...
+  - implemented using language features (could build this yourself on top of C++!)
 ** Smallest C++ program
       
 #+BEGIN_SRC cpp 
@@ -344,9 +347,10 @@ while the song I came to sing remains unsung.”
   - *gedit* + *GCC*
 - Your code must be written in /standard C++/, and be buildable with a common
   cross-platform build tool (more on this in the upcoming weeks).
-
 ** This week
 - Set up programming environment
 - Compile and run ``Hello, world!''
 - Write a simple LCRNG function
-- Exercises from lecture notes..?
+- Exercises *2.1, 2.2*
+- Exercise *2.6*: implement and experiment with a number of RNGs (Note: course
+  website linked to in LNs is outdated)
