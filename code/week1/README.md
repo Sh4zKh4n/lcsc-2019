@@ -5,8 +5,8 @@
 ### Windows<a id="sec-1-1-1"></a>
 
 1.  Download and install Notepad++
-2.  Download and install MinGW and CygWin
-3.  Open Notepad++ and make a file `main.cpp`. Save in e.g. `My Documents\LCSC\`. open CygWin and change to the correct directory.
+2.  Download and install CygWin (https://www.cygwin.com/). In the installation process, install `gcc` and `g++` from the 'Devel' category.
+3.  Open Notepad++ and make a file `main.cpp`. Save in e.g. `My Documents\LCSC\`. Open CygWin and change to the correct directory.
 
 ### Linux<a id="sec-1-1-2"></a>
 
@@ -22,7 +22,7 @@
     
     ```bash
     # ubuntu
-    ...
+    sudo apt install build-essential
     # fedora
     sudo dnf install gcc gcc-c++
     ```
