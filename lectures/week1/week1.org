@@ -108,7 +108,7 @@ $$x = \sum_{i = 0}^{n - 1} b_i 2^i.$$
 - Some examples:
   \begin{align*}
   2 &= 10_2 \\
-  5 &= 110_2 \\
+  5 &= 101_2 \\
   23 &= 10111_2
   \end{align*}
 - Least significant (right), most significant (left).
@@ -339,12 +339,11 @@ while the song I came to sing remains unsung.”
 
 ― /Richard Stallman/, founder of GNU
 #+END_QUOTATION
-
 ** Minimal C++ programming environment
 - /Windows/
-  - *Notepad++* + *MinGW* + *CygWin*
+  - *Notepad++* and *CygWin*
 - /Linux/
-  - *gedit* + *GCC*
+  - *gedit* and *GCC*
 - Your code must be written in /standard C++/, and be buildable with a common
   cross-platform build tool (more on this in the upcoming weeks).
 ** This week

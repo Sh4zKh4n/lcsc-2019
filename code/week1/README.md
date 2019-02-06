@@ -68,7 +68,7 @@ int rng(unsigned int previous) {
 int main() {
   unsigned int x = 5;
   for (int i = 0; i < 10; ++i) {
-    auto x = rng(x);
+    x = rng(x);
     std::cout << x << "\n";
   }
   return 0;
