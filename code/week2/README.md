@@ -92,8 +92,8 @@ definitions for classes and function signatures. The implementations are found
 in `rng.cpp`.
 
 When `main.cpp`, is compiled, the compiler knows that there is a class
-`lcsc::lcrng` since this is defined by `rng.cpp`, but it does not know how the
-specific implementation of the member functions. Only `rng.cpp` is compiled, the
-member functions implementations are available. The linker will then fill in the
+`lcsc::lcrng` since this is declared by `rng.hpp`, but it does not know how the
+specific implementation of the member functions. Only when `rng.cpp` is compiled, the
+member function implementations are available. The linker will then fill in the
 missing references to the implementations of the functionality exposed by
 `rng.hpp` to `main.cpp`.
