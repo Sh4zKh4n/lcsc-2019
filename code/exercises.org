@@ -1,0 +1,137 @@
+#+LATEX_HEADER: \usepackage{amsthm}
+
+* Exercises
+** Week 1
+***  Setting up your programming environment
+Follow instructions in =code/week1= of the GitHub repository to set up a C++
+develnt environment.
+***  [LN 2.2] /Uniform distribution on the unit interval/
+An RNgine produces integers $x_i$ in the set $\{0, 1, 2, \ldots, m - 1\}$.
+To ob reals $\omega_i$ that are distributed uniformly in $[0, 1]$ we can
+scalea number of different ways, such as:
+- $\o_i = \frac{x_i}{m - 1}$
+- $\o_i = \frac{x_i}{m}$
+- $\o_i = \frac{x_i + 1/2}{m}$
+Discuhe advantages and disadvantages of these different scalings. Which one
+would prefer?
+***  [LN 2.3] /Periods of poorly chosen iterations/
+1. Coe the period of $(7x + 3) \bmod{10}$.
+2. Coe the period of $5x \bmod{13}$ and of $7x \bmod{13}$.
+3. Coe the period of $(3x + 4) \bmod{60}$. Note that, even for large $m$,
+   thriod can become small.
+***  [LN 2.6]
+1. Design an abstract class =rng=, which will serve as a base class for all RNG
+   engines that you implement. What (pure virtual) functions should it have?
+2. Design a class =lcrng= that inherits from =rng=. This class should allow a
+   user to choose the parameters $(a, c, m)$ and the seed for the RNG.
+3. Predefine a number of LCRNGs (i.e., with specific parameters) in your
+   library. One way to accomplish this is by making a class such as
+   =park_miller= that inherits from =lcrng=, but has a simpler constructor that
+   only takes the seed. You should at least predefine the LCRNGs that are listed
+   in Table 2.1 of the lecture notes.
+4. Implement Schrage's trick for the generators that it applies to. One
+   straightforward way to do this (but definitely not the only correct way), is
+   to have a =shrage_lcrng= class that inherits from =lcrng= with a different
+   implementation for computing the next iterate (by overloading the member
+   function that computes this).
+** Week 2
+***  Building a library
+Follow instructions in =code/week2= of the GitHub repository to learn about
+headed dealing with multiple files.
+***  [LN 2.9] /Implementation of the rejection method/
+1. Design an abstract class =distribution=, which will serve as a base class for
+   all the distributions that we implement. What (pure virtual) functions should
+   it have?
+2. Implement a uniform distribution class =uniform_distribution=, which is able
+   to sample random reals in an interval $[a, b]$.
+3. Design an interface that allows you to test your distribution. A quick but
+   inexact way to do this is to observe the distribution optically, by e.g.
+   looking at a histogram of the generated samples. You are free to choose how
+   you want to realize this. For example, you can implement a C++ function that
+   shows a histogram in your terminal, or even output the samples to a file and
+   using your favorite environment (Python, MATLAB, Mathematica) to generate the
+   plots.
+4. Choose your favorite distribution $f$. Using the uniform distribution that you
+   implemented before, realize $f$ by implementing the rejection method. Can you
+   design it in such a way that you only need to implement the rejection method
+   once, and reuse this implementations for other choices of $f$?
+*** (Hand-in) [LN 2.7] /Correctness of the inversion method/
+Prove the following theorem:
+
+#+BEGIN_QUOTE
+*Theorem 2.1 (Inversion method)*. Let $f$ be a distribution function with cumulative distribution $F$. Let $U$ be a random variable on $\Omega$ with
+uniform distribution $[0,1]$. Then the random variable $X \equiv F^1(U)$ on $\Omega$ has distribution function $f$.
+#+END_QUOTE
+
+You may take $\Omega = [0, 1]$, and $U(\omega) = \omega$. If $F$ is continuous,
+then we have that $F(x) = \int_{-\infty}^x f(y) dy$.
+*** (Hand-in) [LN 2.8] /Inverse distribution functions/
+Let $u \in [0, 1]$ and $\lambda, \sigma > 0$.
+
+1. Verify that the cdf for an /exponential distribution/:
+   $$F(x) = 1 - e^{-\lambda x}$$
+   has inverse $F^{-1}(u) = -1/\lambda \log(1 - u)$.
+2. Verify that the cdf for a /Cauchy distribution/:
+   $$F(x) = 1/2 - 1/\pi \arctan(x / \sigma)}$$
+   has inverse $F^{-1}(u) = \sigma \tan(\pi(u - 1/2))$.
+*** /Implementation of the inversion method/
+1. Implement a Cauchy distribution =cauchy_distribution= by using the inverse of its cdf that you
+   computed in the hand-in.
+2. Show that:
+   $$\frac{1}{2 \pi} \exp(-x^2 / 2) \leq \frac{1}{\pi (2 + x^2)}.$$
+3. Implement a Gaussian distribution =normal_distribution= in two ways: by using
+   the rejection method together with the Cauchy distribution you implemented,
+   and by using the rejection method together with the uniform distribution. You
+   will require to cut the distributions off to make sure they have finite
+   support.
+4. Generate a large amount $(\geq 10^6)$ of normally distributed numbers in both
+   implementations, while timing the execution speed. You can do a rough timing
+   of a program in your terminal by running e.g.:
+   #+BEGIN_SRC bash
+   time ./test_normal_uniform
+   time ./test_normal_cauchy
+   #+END_SRC
+   How does the underlying distribution impact the runtime of your program? What
+   would you roughly expect by analyzing the two underlying distributions?
+*** [LN 2.10] /Random permutations of $n$ points/
+ Implement a function:
+ #+BEGIN_SRC cpp
+   std::vector<int> random_permutation(rng& engine, int n);
+ #+END_SRC
+ that generates a random permutation of the set $\{ 1, \ldots, n \}$.
+ 1. Draw $n$ numbers in the unit interval $[0, 1]$ by using your
+    =uniform_distribution= class, given you a sequence $(\omega_1, \omega_2,
+    \ldots, \omega_n)$.
+ 2. Define the permutation $\pi$ as the permutation that sorts this sequence.
+    You find this permutation as follows:
+    1. Initialize the return list with $1, \ldots, n$ (hint: look up how to use
+       =std::vector= and =std::iota=).
+    2. Sort this list using =std::sort=, but use a custom compare function, that
+       sorts it according to the sequence of uniform samples that you generated.
+ 3. Prove for $n = 2$ and $n = 3$ that the generated permutation is uniformly
+    distributed.
+** Week 3
+*** Full period for a linear generator $T$
+Prove that a non-singular $T$ generates a non-zero sequence of full period for
+all non-zero seeds, if and only if the order of $T$ is $2^{n} - 1$ (in group of
+non-singular $n \times n$ matrices)
+*** Finding appropriate Xorshift parameters
+Consider the linear generator functions:
+  \begin{equation}
+  T = (\text{Id} + L^a)(\text{Id} + R^b)
+  \label{eq:try1}
+  \end{equation}
+  \begin{equation}
+  T = (\text{Id} + L^a)(\text{Id} + R^b)(\text{Id} +
+  L^c)
+  \label{eq:try2}
+  \end{equation}
+1. Verify experimentally that for (\ref{eq:try1}) no $a, b$ give $T$ with
+   required period for $n = 32$
+2. Give all triples $(a, b, c)$ for which (\ref{eq:try2}) has full period.
+
+/Hint:/ Use the previous exercise.
+*** Implementing Xorshift
+ 1. Implement a class =xorshift= that inherits from =rng= and implements a Xorshift
+    generator for a set of parameters defined by the user.
+ 2. Predefine a number of Xorshift engines.
