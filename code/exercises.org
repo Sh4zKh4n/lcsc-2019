@@ -4,7 +4,7 @@
 ** Week 1
 ***  Setting up your programming environment
 Follow instructions in =code/week1= of the GitHub repository to set up a C++
-develnt environment.
+development environment.
 ***  [LN 2.2] /Uniform distribution on the unit interval/
 An RNgine produces integers $x_i$ in the set $\{0, 1, 2, \ldots, m - 1\}$.
 To ob reals $\omega_i$ that are distributed uniformly in $[0, 1]$ we can
@@ -111,6 +111,19 @@ Let $u \in [0, 1]$ and $\lambda, \sigma > 0$.
  3. Prove for $n = 2$ and $n = 3$ that the generated permutation is uniformly
     distributed.
 ** Week 3
+*** Understanding header-only libraries
+Look at the example code in =code/week3= of the GitHub repository. Make sure you
+understand the basics of templates, the ODR, and translation units. You can use
+this code as a starting point, or simply as inspiration for your own RNG
+library.
+
+You are free to choose whether you want to employ templates for your engines and
+distributions, or to use fixed width numeric types. In any case, think about
+(and discuss in your report) some of the advantages and disadvantages of using
+templates.
+
+From now on, maintain a =CMakeLists.txt= file in your code that allows it to be
+easily built by other programmers.
 *** Full period for a linear generator $T$
 Prove that a non-singular $T$ generates a non-zero sequence of full period for
 all non-zero seeds, if and only if the order of $T$ is $2^{n} - 1$ (in group of
@@ -135,3 +148,7 @@ Consider the linear generator functions:
  1. Implement a class =xorshift= that inherits from =rng= and implements a Xorshift
     generator for a set of parameters defined by the user.
  2. Predefine a number of Xorshift engines.
+*** (Optional) Implementing MT19337
+Research online how the Mersenne Twister is defined. Implement a class =mt19937=
+that implements it. You can compare with the =mt19337= implementation from the
+=<random>= library to ensure correctness.
