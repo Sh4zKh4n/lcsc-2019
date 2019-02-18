@@ -6,12 +6,12 @@
 Follow instructions in =code/week1= of the GitHub repository to set up a C++
 development environment.
 ***  [LN 2.2] /Uniform distribution on the unit interval/
-An RNgine produces integers $x_i$ in the set $\{0, 1, 2, \ldots, m - 1\}$.
+An RNG engine produces integers $x_i$ in the set $\{0, 1, 2, \ldots, m - 1\}$.
 To ob reals $\omega_i$ that are distributed uniformly in $[0, 1]$ we can
-scalea number of different ways, such as:
-- $\o_i = \frac{x_i}{m - 1}$
-- $\o_i = \frac{x_i}{m}$
-- $\o_i = \frac{x_i + 1/2}{m}$
+scale a number of different ways, such as:
+- $\omega_i = \frac{x_i}{m - 1}$
+- $\omega_i = \frac{x_i}{m}$
+- $\omega_i = \frac{x_i + 1/2}{m}$
 Discuhe advantages and disadvantages of these different scalings. Which one
 would prefer?
 ***  [LN 2.3] /Periods of poorly chosen iterations/
