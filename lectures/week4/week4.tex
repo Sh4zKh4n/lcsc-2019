@@ -1,0 +1,320 @@
+% Created 2019-02-21 Thu 11:03
+% Intended LaTeX compiler: pdflatex
+\documentclass[10pt]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage{minted}
+\usepackage{tikz}
+\definecolor{cwiRed}{HTML}{BF1238}
+\definecolor{cwiBlue}{HTML}{0B5D7D}
+\setbeamertemplate{footline}[text line]{%
+\parbox{\linewidth}{\noindent\vspace*{2pt}\noindent\rule{\linewidth}{0.4pt}\\{\scriptsize\noindent\vspace*{7pt}\insertshortauthor\hfill\insertshorttitle\hfill\insertdate}}
+}
+\renewcommand*\footnoterule{}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\usepackage{lmodern}
+\usetheme[progressbar=head]{metropolis}
+\author{WISM454 Laboratory Class Scientific Computing, Jan-Willem Buurlage}
+\date{\today}
+\title{The C++ STL}
+\hypersetup{
+ pdfauthor={WISM454 Laboratory Class Scientific Computing, Jan-Willem Buurlage},
+ pdftitle={The C++ STL},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 26.1 (Org mode 9.1.14)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+
+\section{C++}
+\label{sec:org49ca7af}
+\begin{frame}[fragile,label={sec:org138134b}]{Standard libraries}
+ C++ library
+
+\begin{itemize}
+\item \texttt{<iostream>}
+\item \texttt{<array>}
+\item \texttt{<vector>}
+\item \texttt{<string>}
+\item \texttt{<algorithm>}
+\item \ldots{}
+\end{itemize}
+
+C library (ports)
+
+\begin{itemize}
+\item \texttt{<cstdint>}
+\item \texttt{<cmath>}
+\item \ldots{}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org0018880}]{\texttt{<iostream>}}
+ \begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+#include <iostream>
+
+std::cout << "Hello, world!\n";
+
+int a;
+std::cin >> a;
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org393c383}]{Arrays in C++}
+ \begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+int[5] xs = {1, 2, 3, 4, 5};
+\end{minted}
+\begin{itemize}
+\item Size has to be a compile time constant
+\item C-style dynamic (i.e. at runtime) arrays by heap allocation
+\end{itemize}
+
+\begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+int size;
+std::cin >> size;
+int* xs = new int[size];
+// ... use xs
+delete[] xs;
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:orga6ddc66}]{\texttt{std::array}}
+ \begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+#include <array>
+
+auto xs = std::array<int, 5>();
+
+for (auto& x : xs) {
+    x = 3;
+}
+\end{minted}
+\begin{itemize}
+\item Standard statically (compile-time and constant) sized container
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:orge0f4dcf}]{\texttt{std::vector}}
+ \begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+#include <vector>
+
+auto ys = std::vector<int>(5);
+
+for (auto& y : xs) {
+    y = 3;
+}
+\end{minted}
+
+\begin{itemize}
+\item Dynamically (runtime and non-constant) sized container
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:orgcc0e8c4}]{Usage}
+ \begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+void histogram(const std::vector<uint32_t>& xs,
+    int bin_count = 10) {
+    auto bins = std::vector<uint32_t>(bin_count);
+    // ... fill bins
+    for (auto& bin : bins) {
+        // ... output bins
+    }
+}
+
+struct lcrng_with_state {
+    std::array<uint32_t, 10> state;
+};
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:orgda2b571}]{\texttt{std::vector}}
+ \begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+auto xs = std::vector<int>(5);
+auto y = xs[3]; // ~> 0
+xs.empty(); // ~> false
+xs.size(); // ~> 5
+xs.capacity(); // ~> ?
+
+xs.push_back(5);
+xs.size(); // ~> 6
+
+xs.clear();
+xs.size(); // ~> 0
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[fragile,label={sec:orge8f087a}]{\texttt{std::pair}, \texttt{std::tuple}}
+ \begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+#include <utility>
+
+std::pair<int, int> xs = std::make_pair(3, 3);
+std::tuple<int, int, int> ys = std::make_tuple(3, 3, 5);
+// xs.first, xs.second
+// std::get<0>(ys), std::get<1>(ys)
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:orge0a586b}]{\texttt{<numeric>}: `iota, accumulate`}
+ \begin{itemize}
+\item Many algorithms in \texttt{<numeric>} operate on containers at once
+\item Does not have to be a vector, can also be a stack, queue or C-style array
+\end{itemize}
+
+\begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+// make a vector with 100 elements
+auto xs = std::vector<int>(100);
+
+// fill with 0 .. 99
+std::iota(xs.begin(), xs.end(), 0);
+
+// sum all the elements up
+auto sum = std::accumulate(xs.begin(), xs.end(),
+                           0, std::plus<int>());
+// -> sum = 4950
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:orgb7f5514}]{\texttt{<numeric>}: \texttt{partial\_sum, adjacent\_difference, inner\_product}}
+ \begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+// partial sum (in-place)
+std::partial_sum(xs.begin(), xs.end(),
+                 xs.begin());
+
+// -> xs = [0, 1, 3, 6, ...]
+std::adjacent_difference(xs.begin(), xs.end(),
+                         xs.begin());
+// -> xs = [0, 1, 2, 3, ...]
+
+auto alpha = std::inner_product(xs.begin(), xs.end(),
+                   xs.begin(), 0);
+// -> alpha = 0 * 0 + 1 * 1 + 2 * 2 + 3 * 3 + ...
+// -> alpha = 328350
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org2ef4665}]{\texttt{<algorithm>}: \texttt{transform}}
+ \begin{itemize}
+\item In \texttt{<algorithm>}, many more operations on container are defined, e.g.
+\end{itemize}
+
+\begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+std::transform(xs.begin(), xs.end(), xs.begin(),
+    [](auto i) { return i * i; });
+// -> xs = [0, 1, 4, 9, ...]
+
+auto alpha = std::accumulate(xs.begin(), xs.end(), 0);
+// -> alpha = 328350
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org64d2505}]{\texttt{<algorithm>}: \texttt{fill}, \texttt{generate}}
+ \begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+std::fill(xs.begin(), xs.end(), -1);
+// -> xs = [-1, -1, -1, ..., -1]
+
+int n = 1;
+std::generate(xs.begin(), xs.end(),
+              [&n](){ return n++; });
+// -> xs = [1, 2, 3, ..., 100]
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org485c440}]{\texttt{<algorithm>}: \texttt{any\_of}}
+ \begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+// -> xs = [1, 2, 4, 6, ..., 100]
+auto any = std::any_of(xs.begin(), xs.end(),
+                       [](auto x) { x % 2 == 1 });
+
+auto any_shift = std::any_of(xs.begin() + 1, xs.end(),
+                             [](auto x) { x % 2 == 1 });
+// -> any = true, any_shift = false
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[fragile,label={sec:orgc4cfdd7}]{\texttt{<algorithm>}: \texttt{all\_of}}
+ \begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+// -> xs = [1, 2, 4, 6, ..., 100]
+auto all = std::all_of(xs.begin(), xs.end(),
+                       [](auto x) { x % 2 == 0 });
+
+auto all_shift = std::all_of(xs.begin() + 1, xs.end(),
+                             [](auto x) { x % 2 == 0 });
+// -> all = false, all_shift = true
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:orgf324a52}]{\texttt{<algorithm>}: \texttt{none\_of}}
+ \begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+// -> xs = [1, 2, 4, 6, ..., 100]
+auto none = std::none_of(xs.begin(), xs.end(),
+                         [](auto x) { x % 2 == 1 });
+
+auto none_shift = std::none_of(xs.begin() + 1, xs.end(),
+                               [](auto x) { x % 2 == 1 });
+// -> none = false, none_shift = true
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org8360d15}]{\texttt{<algorithm>}: `reverse, sort, partial\(_{\text{sort}}\)`}
+ \begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+// -> xs = [1, 2, 4, 6, ..., 100]
+std::reverse(xs.begin(), xs.end());
+
+// -> xs = [100, ..., 6, 4, 2, 1]
+std::sort(xs.begin(), xs.end());
+
+// -> xs = [1, 2, 4, 6, ..., 100]
+std::iota(xs.begin(), xs.end(), xs.begin(), 0);
+std::reverse(xs.begin(), xs.end());
+// -> xs = [50, 49, 48, ... 0], 
+
+std::partial_sort(xs.begin(), xs.begin() + 3, xs.end());
+// -> xs = [0, 1, 2, ?, ..., ?]
+\end{minted}
+\end{frame}
+\begin{frame}[fragile,label={sec:org86998df}]{Other containers}
+ \begin{itemize}
+\item \texttt{std::stack}: FIFO container
+\item \texttt{std::queue}: LIFO container
+\item \texttt{std::dequeue}: fast insertion at begin and end
+\item \texttt{std::list}: linked list
+\item \texttt{std::priority\_queue}: retrieve largest element in \(\mathcal{O}(1)\), insert in
+\(\mathcal{O}(log(n))\)
+\item \texttt{std::map}: key-value dictionary, usually red-black tree
+\item \texttt{std::unordered\_map}: key-value dictionary using hash map. \(\mathcal{O}(1)\)
+insert, delete, find -- but not sorted
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[fragile,label={sec:org9243f1c}]{Exercises}
+ \begin{itemize}
+\item I have compiled all the exercises in a file \texttt{exercises.pdf}. See the GitHub
+page.
+\item Implement LCRNG, Xorshift engines
+\item Implement distributions:
+\begin{itemize}
+\item Uniform
+\item Gaussian (with rejection)
+\item Something with inversion
+\end{itemize}
+\item Write function to randomly permute an array
+\item Statistically test your generators
+\end{itemize}
+\end{frame}
+\end{document}
