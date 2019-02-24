@@ -5,10 +5,8 @@ cmake_minimum_required(VERSION 3.8)
 project(lcsc)
 
 # Add a TestU01 target
-link_directories("ext/TestU01/lib")
-add_library(TestU01 INTERFACE)
-target_include_directories(TestU01 INTERFACE "ext/TestU01/include")
-target_link_libraries(TestU01 INTERFACE mylib probdist testu01)
+add_subdirectory("ext/TestU01-CMake")
+target_include_directories(TestU01 PUBLIC "ext/TestU01-CMake/include")
 
 # Define a target 'lcsc' for our (RNG) library.
 set(LIB_SOURCES

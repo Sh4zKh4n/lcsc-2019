@@ -2,6 +2,13 @@
 
 ## Downloading TestU01
 
+### Use CMake fork of TestU01 (recommended)
+
+- Download a zipball from: <https://github.com/JamesHirschorn/TestU01-CMake>, and place it in `code/week4/ext/`.
+- Unzip, and call the folder TestU01-CMake
+
+### Manual
+
 1. Download [TestU01](http://simul.iro.umontreal.ca/testu01/tu01.html) to an `ext/` (external) folder, and unzip.
 2. Build the TestU01 library
    ```bash
@@ -13,7 +20,19 @@
 
 ## Using CMake to build against TestU01
 
-Since TestU01 uses a different build system then CMake, we need to make CMake aware of it. We will make a virtual target, that allows us to test our own RNGs with TestU01 through their C++ interface.
+Since TestU01 uses a different build system then CMake, we need to make CMake aware of it.
+
+### Use CMake fork of TestU01
+
+```cmake
+# Add a TestU01 target
+add_subdirectory("ext/TestU01-CMake")
+target_include_directories(TestU01 PUBLIC "ext/TestU01-CMake/include")
+```
+
+### Manual
+
+We will make a virtual target, that allows us to test our own RNGs with TestU01 through their C++ interface.
 
 ```cmake
 # Add a TestU01 target
@@ -23,13 +42,14 @@ target_include_directories(TestU01 INTERFACE "ext/TestU01/include")
 target_link_libraries(TestU01 INTERFACE mylib probdist testu01)
 ```
 
-Next, we add a dependency of our LCSC library on TestU01. This way, any program that depends on LCSC will also depend on TestU01.
+## Testing our RNG using TestU01
+
+First, we must add a dependency of our LCSC library on TestU01. This way, any program that depends on LCSC will also depend on TestU01.
 
 ```cmake
 target_link_libraries(lcsc INTERFACE TestU01)
 ```
 
-## Testing our RNG using TestU01
 
 We create a new file `example/test_rng.cpp`, and a target to our CMakeLists.txt:
 
