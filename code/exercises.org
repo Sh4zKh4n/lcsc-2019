@@ -152,3 +152,7 @@ Consider the linear generator functions:
 Research online how the Mersenne Twister is defined. Implement a class =mt19937=
 that implements it. You can compare with the =mt19337= implementation from the
 =<random>= library to ensure correctness.
+** Week 4
+*** Using external libraries
+Look at the example code in =code/week4= of the GitHub repository. Download and
+install the TestU01 library, and test your RNGs against some of its tests.
