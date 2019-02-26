@@ -54,7 +54,7 @@ g++ main.cpp -o main
 ./main
 ```
 
-## Write and compiling a simple RNG<a id="sec-1-3"></a>
+## Writing and compiling a simple RNG<a id="sec-1-3"></a>
 
 Replace (or make a new file) your source file with the following:
 
