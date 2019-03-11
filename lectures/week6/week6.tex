@@ -1,0 +1,756 @@
+% Created 2019-03-11 Mon 13:19
+% Intended LaTeX compiler: pdflatex
+\documentclass[10pt]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage{minted}
+\usepackage{tikz}
+\definecolor{cwiRed}{HTML}{BF1238}
+\definecolor{cwiBlue}{HTML}{0B5D7D}
+\setbeamertemplate{footline}[text line]{%
+\parbox{\linewidth}{\noindent\vspace*{2pt}\noindent\rule{\linewidth}{0.4pt}\\{\scriptsize\noindent\vspace*{7pt}\insertshortauthor\hfill\insertshorttitle\hfill\insertdate}}
+}
+\renewcommand*\footnoterule{}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\usepackage{lmodern}
+\usetheme[progressbar=head]{metropolis}
+\author{WISM454 Laboratory Class Scientific Computing, Jan-Willem Buurlage}
+\date{\today}
+\title{Monte Carlo methods}
+\hypersetup{
+ pdfauthor={WISM454 Laboratory Class Scientific Computing, Jan-Willem Buurlage},
+ pdftitle={Monte Carlo methods},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 26.1 (Org mode 9.1.14)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+
+\section{Organization}
+\label{sec:org4cdad8f}
+\begin{frame}[label={sec:org2e64313}]{Today}
+\begin{itemize}
+\item If you wish, you can e-mail me a zip file with your source files (do not
+include anything other than *.hpp, *.cpp, CMakeLists.txt files).
+\item I can give you initial feedback on your code and library design (not for a
+grade). You can use this to improve your code before the report.
+\item Only today!
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:org12f9393}]{Report I}
+\begin{itemize}
+\item \emph{Deadline:} April 17th
+\item Content of report
+\begin{enumerate}
+\item \alert{Theory}.
+\begin{itemize}
+\item A description of LCRNGs and the influence of parameters.
+\item Distributions, inversion and rejection.
+\item A discussion on statistical properties and tests.
+\item Numerical integration, Monte Carlo.
+\end{itemize}
+\item \alert{Software library}. Describe your software library, with discussions on usage
+and design choices. After reading this section, the reader should be able to
+understand how to use every aspect of your library.
+\item \alert{Numerical results}.
+\end{enumerate}
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:org71f1632}]{How it is graded}
+\begin{itemize}
+\item You will receive an independent grade for the following:
+\begin{itemize}
+\item Writing
+\item Presentation
+\item Experiments
+\item Features
+\item Code
+\end{itemize}
+\item They all count for 20\%.
+\item Scientific writing skills are important for any researcher. I expect the
+reports to be written with care. Try to avoid spending 99\% of your time on
+your code and rushing the report.
+\end{itemize}
+\end{frame}
+\begin{frame}[fragile,label={sec:org7b10331}]{Remarks on report}
+ \begin{itemize}
+\item Do not include your source code in the report, but instead \alert{e-mail} me a zip
+file with your source files (do not include anything other than *.hpp, *.cpp,
+CMakeLists.txt files).
+\item Describe the overall structure of your code on a \alert{high-level}. For example,
+discuss the different classes (such as \texttt{lcrng}) you have and how they relate
+to each other.
+\item All \alert{exercises} listed in the schedule, except those marked hand-in or optional,
+are expected to be treated in your reports. Do not refer to them (or the
+lecture notes in general) explicitly, but rather make them part of the story.
+\item Provide \alert{benchmark results}, and the results of \alert{statistical tests} when run on
+the RNG engines you provide. Be economical with your plots and tables. Make
+sure that every result you include is indispensable for the story that you
+want to tell about the RNGs and your library. After reading this, the reader
+should be able to make an informed decision on which parts of your library they
+want to use for his application.
+\end{itemize}
+\end{frame}
+\section{Monte Carlo Methods (I)}
+\label{sec:org5ef7311}
+\begin{frame}[label={sec:orgaf34b94}]{Numerical computation of integrals}
+\begin{itemize}
+\item \alert{Input}: integration domain \(\Omega\subseteq \mathbb{R}^d\) and \alert{black box access} to $$f:\mathbb{R}^d\to\mathbb{R}$$
+\item \alert{Output}: approximation of $$\int_\Omega f(\vec{x}) d\vec{x}$$
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:org8224d07}]{Three strategies}
+Main idea:
+$$\int_\Omega f(\vec{x}) d\vec{x} \approx \sum_{i \in I} w_i f(\vec{x}_i)$$
+
+How to find \alert{weights} \(w_i\in\mathbb{R}\) and \alert{integration points} \(\vec{x}_i \in \mathbb{R}^d\)?
+
+\begin{itemize}
+\item Quadrature formulas \(\hfill\) ([LN] 3.1)
+\item Monte Carlo \(\hfill\) ([LN] 3.2)
+\item Low-discrepancy sampling \(\hfill\) ([LN] 3.3)
+\end{itemize}
+\end{frame}
+
+\begin{frame}[label={sec:orga498faa}]{Quadrature formulas}
+\begin{itemize}
+\item Assume for now:
+\begin{itemize}
+\item 1-dimensional \(\quad f : \mathbb{R} \to \mathbb{R}\)
+\item twice continuously differentiable
+\end{itemize}
+\item The \alert{trapezoidal rule} is
+$$\int_{a}^{b} f(x) dx \approx \frac{b-a}{2}\left( f(a) + f(b) \right)$$
+\item With \alert{remainder} (i.e. error)
+$$R = - \frac{(b-a)^3}{12} f''(\eta)\qquad \text{for a }\eta\in[a,b]$$
+\end{itemize}
+\end{frame}
+
+\begin{frame}[label={sec:org38732bb}]{Quadrature formulas}
+\begin{itemize}
+\item Divide \([a,b]\) into \(k\) intervals of size \(h = \frac{b-a}{k}\).
+
+\item The \(k+1\) integration points are now \(\{a, a + h, a+2h, ..., b\}\)
+$$\int_{a}^{b} f(x) dx \approx h \left( \frac{1}{2}f(a) + \left( \sum_{j=1}^{k-1} f(a+j\cdot h) \right) + \frac{1}{2}f(b) \right)$$
+\item Remainder satisfies
+$$R = \frac{b-a}{12} h^2 \left[ f'(b) - f'(a) \right] + \mathcal{O}(h^3) \quad \text{for } h\to 0$$
+and is bounded by
+$$|R| \leq \frac{b-a}{12} h^2 \; \max_{x\in[a,b]} | f''(x) |$$
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:orgaceceda}]{Accuracy}
+\begin{itemize}
+\item For \(k\) intervals of size \(h\)
+$$|R| \leq \frac{b-a}{12} h^2 \; \max_{x\in[a,b]} | f''(x) |$$
+\item For a fixed function \(f\) and fixed integration domain \([a,b]\) we have
+$$|R| = \mathcal{O}(h^2) = \mathcal{O} \left( \frac{1}{k^2} \right)$$
+\item To get accuracy \(|R| \leq \epsilon\), we require \(k \propto
+  \frac{1}{\sqrt{\epsilon}}\).
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:orge260c6e}]{Higher dimensions}
+\begin{itemize}
+\item For a function \(f:\mathbb{R}^2 \to \mathbb{R}\) we want to compute
+$$ \int_{a_1}^{b_1} \int_{a_2}^{b_2} f(x,y) \; dy \; dx$$
+\item We can write this as
+$$\int_{a_1}^{b_1} F(x)\;dx \quad\text{with}\quad F(x) = \int_{a_2}^{b_2} f(x,y)\;dy$$
+\item Define stepsizes \(h_1 = \frac{b_1-a_1}{k_1}\) and \(h_2 = \frac{b_2-a_2}{k_2}\)
+\item To compute the \(x\) integral we have to compute
+$$F(a_1), F(a_1 + h_1), ...$$
+\item Computing \(F(x_i)\) is a one-dimensional integral (over \(y\)).
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:orgcc4c84f}]{Accuracy in higher dimensions}
+\begin{itemize}
+\item When taking \(k\) points in each direction, the error of a \(d\text{-dimensional}\) integral is
+$$|R| = \mathcal{O}(h^2) = \mathcal{O}(\frac{1}{k^2})$$
+The total number of points needed is \(n=k^d\).
+\item To achieve error \(|R|\leq \epsilon\) we need
+$$n \propto \left(\frac{1}{\sqrt{\epsilon}}\right)^d$$
+\item \alert{Curse of dimensionality}
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:org325ebac}]{Monte Carlo}
+\begin{itemize}
+\item Hit-or-miss
+\item Simple sampling
+\end{itemize}
+
+You will implement both methods
+\end{frame}
+\begin{frame}[label={sec:orgdafce8c}]{Hit-or-miss}
+\begin{itemize}
+\item Assume \(f:[0,1]\to[0,1]\)
+$$I(f) = \int_{0}^{1} f(x)\;dx$$
+\item Generate uniform random `shots'
+$$(x_1,y_1), (x_2,y_2), ...$$
+in \([0,1]\times[0,1]\).
+\item Count the number of shots that \alert{hit} the area below the graph of \(f\).
+$$N_f (n) = \#\{ i \leq n \mid y_i \leq f(x_i) \}$$
+Approximate the integral by \(N_f(n) / n\).
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:orgaf488ab}]{Hit-or-miss}
+\begin{itemize}
+\item Define the random variable \(B_f\) on the probability space \([0,1]\times[0,1]\)
+$$B_f(x,y)=\begin{cases}1 & y \leq f(x)\\0 & y > f(x)\end{cases}$$
+\(B_f\) is a Bernoulli variable
+$$\mathbb{E}(B_f) = \mathbb{P}(B_f) = I(f)$$
+\item By the law of large numbers
+$$\overline{B_n} \equiv \frac{1}{n} \sum_{i=1}^n b_i$$
+converges to \(\mathbb{E}(B_f)\) as \(n\to\infty\) where \(b_i\) are realisations of \(B_f\).
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:org86ca8ab}]{Hit-or-miss accuracy}
+$$\mathbb{E}(B_f) = I(f)$$
+$$\overline{B_n} \equiv \frac{1}{n} \sum_{i=1}^n b_i = \frac{N_f(n)}{n}$$
+\begin{itemize}
+\item The expected error:
+$$\mathbb{E}(\;|\overline{B_n} - \mathbb{E}(B_f)|\;) \leq \frac{1}{\sqrt{n}} \sqrt{\mathrm{Var}(B_f)}$$
+\item Bernoulli variables: \(\mathrm{Var}(B_f) = \mathbb{P}(B_f) (1-\mathbb{P}(B_f))\)
+$$\mathbb{E}\left( \left\vert \frac{N_f(n)}{n} - I(f) \right\vert \right) \leq \sqrt{\frac{I(f)(1-I(f))}{n}} \leq \frac{1}{2\sqrt{n}}$$
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:org2e372ab}]{Multi-dimensional hit-or-miss}
+\begin{itemize}
+\item Assume \(f:[0,1]^d \to [0,1]\)
+\item Generate uniform random \alert{shots} of the form \((x_1,...,x_d,y)\).
+\item Count the number of shots for which \(y < f(x_1,...,x_d)\).
+\item What is the expected error?
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:orgadbe8cb}]{Simple sampling}
+$$\int_{a}^{b} f(x)\; dx$$
+
+\begin{itemize}
+\item Let \(Q\) be a random variable that is \alert{uniform} over \([a,b]\).
+
+\item The density function \(q\) of \(Q\) is constant: \(q(x) = \frac{1}{b-a}\) for \(x\in[a,b]\).
+
+\item Consider the random variable \(f(Q)\) then
+$$\int_a^b f(x) \; dx = (b-a) \;\; \mathbb{E}\left( f(Q) \right)$$
+\end{itemize}
+\end{frame}
+
+\begin{frame}[label={sec:org17dc90d}]{Simple sampling accuracy}
+\begin{itemize}
+\item By the law of large numbers
+$$\overline{f(Q)_n} = \frac{1}{n} \sum_{i=1}^n f(q_i) \; \to \; \mathbb{E}(f(Q))$$
+where \(q_i\) are realisations of \(Q\).
+\item Expected error
+$$\mathbb{E}\left( \left\vert \overline{f(Q)_n} - \mathbb{E}(f(Q)) \right\vert \right) \leq \frac{1}{\sqrt{n}} \sqrt{\mathrm{Var}(f(Q))}$$
+\item Estimate for \(\mathrm{Var}(f(Q))\):
+$$\frac{1}{n-1}\sum_{i=1}^n \left[ f(q_i) - \overline{f(Q)_n} \right]^2$$
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:org33f5491}]{Multi-dimensional simple sampling}
+\begin{itemize}
+\item Let \(Q\) be uniform over \(\mathbf{J} = [a_1,b_1]\times...\times[a_d,b_d]\)
+$$\int_{\mathbf{J}} f(\vec{x}) \; d\vec{x} = (b_1-a_1)\cdots(b_d-a_d)\;\mathbb{E}(f(Q))$$
+\item The error is bounded by
+$$\frac{1}{\sqrt{n}}\sqrt{\mathrm{Var}(f(Q))}$$
+\end{itemize}
+\end{frame}
+
+\begin{frame}[label={sec:orge728309}]{Multi-dimensional simple sampling}
+What if the integration domain \(\Omega\) is not a rectangle?
+$$\int_\Omega f(\vec{x})\;d\vec{x} = \int_{a_1}^{b_1} \int_{a_2(x_1)}^{b_2(x_1)} \cdots \int_{a_d(x_1,...,x_{d-1})}^{b_d(x_1,...,x_{d-1})} f(\vec{x}) \;dx_d \cdots dx_1$$
+Use repeated 1-dimensional simple sampling, then
+$$\int_\Omega f(\vec{x})\;d\vec{x} \approx \frac{1}{|\mathcal{I}|} \sum_{\vec{x}\in\mathcal{I}} w(\vec{x}) f(\vec{x})$$
+\end{frame}
+
+\begin{frame}[label={sec:org65ad1e8}]{Conclusions}
+\begin{itemize}
+\item Quadrature methods
+\begin{itemize}
+\item Trapezoidal rule
+\item Error depends on \(\frac{1}{k^2}\;\max_x |f''(x)|\)
+\item \(n = k^d\) points in \(d\) dimensions
+\item To achieve error \(\epsilon\) we need
+\end{itemize}
+\end{itemize}
+$$n \propto \left(\frac{1}{\epsilon}\right)^{d/2}$$
+\begin{itemize}
+\item Monte Carlo methods
+\begin{itemize}
+\item Hit-or-miss
+\item Simple sampling
+\item To achieve error \(\epsilon\) we need
+\end{itemize}
+\end{itemize}
+$$n \propto \left(\frac{1}{\epsilon}\right)^{2}$$
+\end{frame}
+\section{C++}
+\label{sec:org91eabf0}
+\begin{frame}[fragile,label={sec:org3869e9d}]{Functions as objects}
+ \begin{itemize}
+\item In C++ we can store functions using \texttt{std::function}.
+\end{itemize}
+
+\begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+// Example
+int myfunction(float x, int y) {
+    return ...;
+}
+
+std::function<int(float,int)> f = myfunction;
+
+int z1 = myfunction(3.14, 15);
+int z2 = f(3.14, 15);
+
+// General syntax
+std::function<result_type()> g;
+std::function<result_type(argument_type,...)> h;
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org99a224c}]{Functions as objects}
+ Why?
+
+\begin{itemize}
+\item Pass a function as an argument to another function
+\begin{itemize}
+\item \texttt{integrate( f, ... )}
+\end{itemize}
+\item Store a function
+\begin{itemize}
+\item Common examples are \uline{callbacks} or \uline{event handlers}.
+\end{itemize}
+\end{itemize}
+
+\begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+void create_button(int x, int y,
+                   std::function<void()> onclick);
+
+void myfunction() {
+    std::cout << "Button clicked!" << std::endl;
+}
+
+create_button(100, 200, myfunction);
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:orgaa2fc43}]{Functions as objects}
+ \begin{itemize}
+\item You have seen other examples:
+\begin{itemize}
+\item \texttt{std::accumulate}
+\item \texttt{std::transform}
+\item \texttt{std::generate}
+\item \texttt{std::any\_of}
+\item \ldots{}
+\end{itemize}
+\end{itemize}
+
+\begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+int square(int x) {
+    return x * x;
+}
+
+// xs <- [1,2,3,4,5]
+std::transform(xs.begin(), xs.end(), xs.begin(),
+               square);
+// xs <- [1,4,9,16,25]
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:orgdacb95a}]{Functions as objects}
+ \begin{itemize}
+\item Good for Monte Carlo integration
+\end{itemize}
+
+\begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+class mcintegrator {
+    ...
+    float integrate(std::function<float(float)> f,
+                    float a, float b, int n) {
+        return ...;
+    }
+    ...
+    // f : T -> T
+    template <typename T>
+    T integrate(std::function<T(T)> f,
+                T a, T b, int n) {
+        return ...;
+    }
+};
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:orgcf9fad0}]{Functions as objects}
+ \begin{itemize}
+\item Function object can be \uline{empty}
+\end{itemize}
+
+\begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+int myfunction() { return 3; }
+
+std::function<int()> f;
+std::function<int()> g = myfunction;
+
+if (f)
+    f(); // not called
+
+if (g)
+    g(); // called
+
+g = nullptr;
+
+if (g)
+    g(); // not called
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org9cfc313}]{Functions as objects}
+ \begin{itemize}
+\item \texttt{std::function} can store any \alert{callable} object
+\end{itemize}
+\begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+class myclass {
+  public:
+    int operator()(int x) {
+        return z + x;
+    }
+    int z;
+};
+
+myclass a;
+a.z = 5;
+int y = a(3); // y <- 8
+
+std::function<int(int)> f = a;
+int z = f(4);
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org864d0b2}]{Anonymous functions}
+ \begin{itemize}
+\item Anonymous functions, also known as \alert{lambda} functions
+\end{itemize}
+
+\begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+int square(int x) {
+    return x * x;
+}
+// xs <- [1,2,3,4,5]
+std::transform(xs.begin(), xs.end(), xs.begin(),
+               square);
+// xs <- [1,4,9,16,25]
+std::transform(xs.begin(), xs.end(), xs.begin(),
+               [](int x) { return x+1; } );
+// xs <- [2,5,10,17,26]
+std::function<int(int)> f = square;
+std::function<int(int)> g = [](int x) { return x+1; };
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org14c0c1d}]{Lambda function syntax}
+ \begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+// simple version
+[] (parameters) { body }
+
+// (almost) full version
+[captures] (parameters) -> return_type { body }
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:orgc410187}]{Capturing variables}
+ \begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+std::vector<int> xs = {1,2,3,4,5};
+int a = 3;
+
+// Does *not* compile!
+std::transform(xs.begin(), xs.end(), xs.begin(),
+               [](int x) { return x+a; } );
+
+// This works
+std::transform(xs.begin(), xs.end(), xs.begin(),
+               [a](int x) { return x+a; } );
+\end{minted}
+\begin{itemize}
+\item The variable \texttt{a} is \alert{captured} by the lambda function
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:orgddf8b02}]{Capturing variables}
+ \begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+std::vector<int> xs(100, 0);
+int a = 5, b = 0, c = 0;
+
+// xs <- {0, 0, ..., 0}
+std::generate(xs.begin(), xs.end(),
+            [a, &b]() {
+                b++;
+                return a + b;
+            } );
+// xs <- {6, 7, ..., 105}
+// a  <- 5
+// b  <- 100
+// c  <- 0
+\end{minted}
+\begin{itemize}
+\item The variable \texttt{a} is captured by \alert{\alert{value}}
+\item The variable \texttt{b} is captured by \alert{\alert{reference}}
+\item The variable \texttt{c} is not captured
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org2a42341}]{Capturing variables}
+ \begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+std::vector<int> xs(100, 0);
+int a = 5, b = 0, c = 0;
+
+// xs <- {0, 0, ..., 0}
+std::generate(xs.begin(), xs.end(),
+            [&]() {
+                b++;
+                return a + b;
+            } );
+// xs <- {6, 7, ..., 105}
+// a  <- 5
+// b  <- 100
+// c  <- 0
+\end{minted}
+\begin{itemize}
+\item The variable \texttt{a} is captured by \alert{\alert{reference}}
+\item The variable \texttt{b} is captured by \alert{\alert{reference}}
+\item The variable \texttt{c} is not captured
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org7c7c815}]{Capturing variables}
+ \begin{itemize}
+\item \texttt{[a]} capture \texttt{a} by \alert{\alert{value}}
+\item \texttt{[\&a]} capture \texttt{a} by \alert{\alert{reference}}
+\item \texttt{[\&]} captures \alert{\alert{all}} variables used in the lambda by \alert{\alert{reference}}
+\item \texttt{[=]} captures \alert{\alert{all}} variables used in the lambda by \alert{\alert{value}}
+\item \texttt{[\&, a]} captures variables like with \texttt{[\&]}, but \texttt{a} by value
+\item \texttt{[=, \&a]} captures variables like with \texttt{[=]}, but \texttt{a} by reference
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org2483391}]{Capturing variables}
+ \begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+int a = 5, b = 2, c = 0;
+std::function<int()> f = [&, a]() { b++; return a + b; };
+// a <- 5 , b <- 2 , c <- 0
+c = f();
+\end{minted}
+\pause
+\begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+// a <- 5  , b <- 3 , c <- 8
+c = f();
+a = 20;
+\end{minted}
+\pause
+\begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+// a <- 20 , b <- 4 , c <- 9
+c = f();
+b = 100;
+\end{minted}
+\pause
+\begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+// a <- 20 , b <- 100 , c <- 10
+c = f();
+\end{minted}
+\pause
+\begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+// a <- 20 , b <- 101 , c <- 106
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org8d5c8ec}]{Comparison with `old C++'}
+ \begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+int myfunction(float x, int y) { return 3; }
+
+int (*oldf)(float,int)             = myfunction; // Old
+std::function<int(float,int)> newf = myfunction; // New
+
+int a = *oldf(3.1, 4);
+int b =  newf(3.1, 4);
+
+// Old
+int func1( int (*f)(float,int) ) {...}
+// New
+int func2( std::function<int(float,int)> f ) {...}
+\end{minted}
+\begin{itemize}
+\item Old function pointers can \alert{\alert{not}} store arbitrary \alert{callable} objects
+\item They can store lambda functions but only \alert{\alert{without}} captures
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org9662e44}]{Values and references}
+ \begin{itemize}
+\item \texttt{std::function} object can store data so passing by reference makes sense
+\item When used with lambdas, passing by value makes sense because of \alert{move semantics}
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:org8943327}]{Smart pointers}
+\begin{itemize}
+\item Regular pointers
+\item Unique pointers
+\item Shared pointers
+\end{itemize}
+\end{frame}
+\begin{frame}[fragile,label={sec:orgf4e0116}]{Regular pointers}
+ \begin{itemize}
+\item Pointers can be used for objects on the heap
+\end{itemize}
+
+\begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+int* x = new int;
+
+*x = 5;
+
+delete x;
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org83dccf5}]{Regular pointers}
+ \begin{itemize}
+\item Pointers are ``dangerous''
+\end{itemize}
+
+\begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+int myfunction (...) {
+    int* x = new int;
+    *x = 3;
+    ...
+    ...
+    ...
+    ...
+    ...
+    ...
+    ...
+    ...
+    delete x;
+    return result;
+}
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org682a477}]{Regular pointers}
+ \begin{itemize}
+\item Pointers are ``dangerous''
+\end{itemize}
+
+\begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+int myfunction (...) {
+    int* x = new int;
+    *x = 3;
+    ...
+    ...
+    if (error) {
+        return 0;
+    }
+    ...
+    ...
+    ...
+    delete x;
+    return result;
+}
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:orge99600f}]{Unique pointers}
+ \begin{itemize}
+\item \texttt{std::unique\_ptr} is a \alert{smart pointer}
+\item Takes care of deleting the object at the right time
+\end{itemize}
+
+\begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+int myfunction (...) {
+    std::unique_ptr<int> x = std::make_unique<int>();
+    *x = 3;
+    ...
+    ...
+    if (error) {
+        return 0;
+    }
+    ...
+    ...
+    return result;
+}
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org706cc18}]{Unique pointers}
+ \begin{itemize}
+\item \texttt{std::unique\_ptr} takes care of \alert{ownership}
+\end{itemize}
+
+\begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+int myfunction (std::unique_ptr<int> x) {
+    ...
+}
+
+std::unique_ptr<int> a = std::make_unique<int>();
+*a = 3;
+// Now we pass the ownership to myfunction
+myfunction(std::move(a));
+
+// Here a is no longer valid
+if (a)
+    std::cout << "a is valid" << std::endl;
+else
+    std::cout << "a is not valid" << std::endl;
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org66eb9b9}]{Shared pointers}
+ \begin{itemize}
+\item You can not pass \texttt{std::unique\_ptr} to different functions
+\item For this we have \texttt{std::shared\_ptr}
+\end{itemize}
+
+\begin{minted}[frame=none,xleftmargin=\parindent]{cpp}
+class rng;   // base class in your library
+class lcrng; // subclass in your library
+
+// Create random number generator
+std::shared_ptr<rng> park_miller =
+        std::make_shared<lcrng>(16807, ...);
+
+int x = park_miller->next(); // Use the shared pointer
+
+// Pass the shared pointer to other functions
+output_random_numbers(park_miller);
+// Use it to create your Monte Carlo class
+mcintegrator mc(park_miller);
+mc.integrate(myfunction);
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:orgd729b3e}]{Conclusion}
+ \begin{itemize}
+\item \texttt{std::function}
+\begin{itemize}
+\item store functions
+\item functions as arguments
+\end{itemize}
+\item Lambda functions
+\begin{itemize}
+\item easy way of passing small functions to other functions
+\item captures
+\end{itemize}
+\item Smart pointers
+\begin{itemize}
+\item safe way of dealing with pointers
+\end{itemize}
+\end{itemize}
+\end{frame}
+\end{document}
