@@ -156,3 +156,30 @@ that implements it. You can compare with the =mt19337= implementation from the
 *** Using external libraries
 Look at the example code in =code/week4= of the GitHub repository. Download and
 install the TestU01 library, and test your RNGs against some of its tests.
+** Week 6
+*** An extension to our RNG library
+Look at the example code in =code/week6= of the GitHub repository. Implement
+basic Monte Carlo integration (hit-or-miss and simple sampling) of a black box
+function represented as an =std::function= object. Your Monte Carlo code should
+work for arbitrary functions and with any of the RNG engines you have
+implemented.
+*** [LN 3.1] The error of the trapezoidal rule.
+Show that the remainder:
+$$R \equiv \int_a^b f(x) dx - \frac{b - a}{2} (f(a) + f(b))$$
+can be expressed as
+$$R \equiv \frac{(b - a)^3}{12} f''(\eta)$$
+for some $\eta \in [a, b]$.
+*** [LN 3.2] The error of the repeated trapezoidal rule
+1. Show that the overall error for the repeated trapezoidal rule can be
+   expressed as:
+   $$R(h) = - \frac{1}{12} h^3 \sum_{i = 1}^k f''(\eta_i),$$
+   with $\eta_i \in [x_{i - 1}, x_i]$.
+2. Show that this error is bounded by
+   $$|R(h)| \leq \frac{b - a}{12} h^2 \max_{x \in [a, b]} |f''(x)|.$$
+*** [LN 3.4] Integrating a function with Monte Carlo.
+Consider the integral:
+$$I = \int_0^1 \sqrt{1 - x^2}~dx.$$
+1. Compute this integral using /hit-or-miss/ Monte Carlo.
+2. Compute this integral using /simple sampling/ Monte Carlo. 
+3.  Investigate the behaviour of the remainder as a function of the number of
+   `shots' and `sample points'.
