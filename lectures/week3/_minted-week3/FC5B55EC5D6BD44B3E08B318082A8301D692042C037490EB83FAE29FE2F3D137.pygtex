@@ -1,0 +1,16 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{object} \PYG{p}{\PYGZob{}}
+  \PYG{k}{public}\PYG{o}{:}
+    \PYG{n}{object}\PYG{p}{()} \PYG{p}{\PYGZob{}} \PYG{n}{std}\PYG{o}{::}\PYG{n}{cout} \PYG{o}{\PYGZlt{}\PYGZlt{}} \PYG{l+s}{\PYGZdq{}Constructor}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{;} \PYG{p}{\PYGZcb{}}
+    \PYG{o}{\PYGZti{}}\PYG{n}{object}\PYG{p}{()} \PYG{p}{\PYGZob{}} \PYG{n}{std}\PYG{o}{::}\PYG{n}{cout} \PYG{o}{\PYGZlt{}\PYGZlt{}} \PYG{l+s}{\PYGZdq{}Deconstructor}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{;} \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{};}
+
+\PYG{k+kt}{void} \PYG{n+nf}{f}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+    \PYG{n}{object} \PYG{n}{o}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{n}{f}\PYG{p}{();}
+
+\PYG{k}{auto} \PYG{n}{o} \PYG{o}{=} \PYG{k}{new} \PYG{n}{object}\PYG{p}{;}
+\PYG{k}{delete} \PYG{n}{o}\PYG{p}{;}
+\end{Verbatim}

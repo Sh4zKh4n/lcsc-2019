@@ -1,0 +1,12 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{// make a vector with 100 elements}
+\PYG{k}{auto} \PYG{n}{xs} \PYG{o}{=} \PYG{n}{std}\PYG{o}{::}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{int}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{l+m+mi}{100}\PYG{p}{);}
+
+\PYG{c+c1}{// fill with 0 .. 99}
+\PYG{n}{std}\PYG{o}{::}\PYG{n}{iota}\PYG{p}{(}\PYG{n}{xs}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{(),} \PYG{n}{xs}\PYG{p}{.}\PYG{n}{end}\PYG{p}{(),} \PYG{l+m+mi}{0}\PYG{p}{);}
+
+\PYG{c+c1}{// sum all the elements up}
+\PYG{k}{auto} \PYG{n}{sum} \PYG{o}{=} \PYG{n}{std}\PYG{o}{::}\PYG{n}{accumulate}\PYG{p}{(}\PYG{n}{xs}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{(),} \PYG{n}{xs}\PYG{p}{.}\PYG{n}{end}\PYG{p}{(),}
+                           \PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{std}\PYG{o}{::}\PYG{n}{plus}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{int}\PYG{o}{\PYGZgt{}}\PYG{p}{());}
+\PYG{c+c1}{// \PYGZhy{}\PYGZgt{} sum = 4950}
+\end{Verbatim}

@@ -82,6 +82,7 @@ in the current directory.
 ```bash
 # we make a folder called 'build'
 mkdir build
+cd build
 # run CMake, '..' means the CMakeLists.txt file is contained in the parent directory
 cmake ..
 # this will generate a Makefile, which can be used with make

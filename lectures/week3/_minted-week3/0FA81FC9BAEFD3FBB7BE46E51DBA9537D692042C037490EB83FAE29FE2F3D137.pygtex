@@ -1,0 +1,6 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{void} \PYG{n+nf}{monte\PYGZus{}carlo}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+    \PYG{k}{auto} \PYG{n}{r} \PYG{o}{=} \PYG{n}{rng\PYGZus{}with\PYGZus{}big\PYGZus{}state}\PYG{p}{();} \PYG{c+c1}{// or:}
+    \PYG{n}{rng\PYGZus{}with\PYGZus{}big\PYGZus{}state} \PYG{n}{r}\PYG{p}{;} \PYG{c+c1}{// same thing}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

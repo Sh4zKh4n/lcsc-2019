@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{// \PYGZhy{}\PYGZgt{} xs = [1, 2, 4, 6, ..., 100]}
+\PYG{k}{auto} \PYG{n}{none} \PYG{o}{=} \PYG{n}{std}\PYG{o}{::}\PYG{n}{none\PYGZus{}of}\PYG{p}{(}\PYG{n}{xs}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{(),} \PYG{n}{xs}\PYG{p}{.}\PYG{n}{end}\PYG{p}{(),}
+                         \PYG{p}{[](}\PYG{k}{auto} \PYG{n}{x}\PYG{p}{)} \PYG{p}{\PYGZob{}} \PYG{n}{x} \PYG{o}{\PYGZpc{}} \PYG{l+m+mi}{2} \PYG{o}{==} \PYG{l+m+mi}{1} \PYG{p}{\PYGZcb{});}
+
+\PYG{k}{auto} \PYG{n}{none\PYGZus{}shift} \PYG{o}{=} \PYG{n}{std}\PYG{o}{::}\PYG{n}{none\PYGZus{}of}\PYG{p}{(}\PYG{n}{xs}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{()} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{xs}\PYG{p}{.}\PYG{n}{end}\PYG{p}{(),}
+                               \PYG{p}{[](}\PYG{k}{auto} \PYG{n}{x}\PYG{p}{)} \PYG{p}{\PYGZob{}} \PYG{n}{x} \PYG{o}{\PYGZpc{}} \PYG{l+m+mi}{2} \PYG{o}{==} \PYG{l+m+mi}{1} \PYG{p}{\PYGZcb{});}
+\PYG{c+c1}{// \PYGZhy{}\PYGZgt{} none = false, none\PYGZus{}shift = true}
+\end{Verbatim}

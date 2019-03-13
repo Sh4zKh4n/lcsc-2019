@@ -1,0 +1,15 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{// partial sum (in\PYGZhy{}place)}
+\PYG{n}{std}\PYG{o}{::}\PYG{n}{partial\PYGZus{}sum}\PYG{p}{(}\PYG{n}{xs}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{(),} \PYG{n}{xs}\PYG{p}{.}\PYG{n}{end}\PYG{p}{(),}
+                 \PYG{n}{xs}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{());}
+
+\PYG{c+c1}{// \PYGZhy{}\PYGZgt{} xs = [0, 1, 3, 6, ...]}
+\PYG{n}{std}\PYG{o}{::}\PYG{n}{adjacent\PYGZus{}difference}\PYG{p}{(}\PYG{n}{xs}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{(),} \PYG{n}{xs}\PYG{p}{.}\PYG{n}{end}\PYG{p}{(),}
+                         \PYG{n}{xs}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{());}
+\PYG{c+c1}{// \PYGZhy{}\PYGZgt{} xs = [0, 1, 2, 3, ...]}
+
+\PYG{k}{auto} \PYG{n}{alpha} \PYG{o}{=} \PYG{n}{std}\PYG{o}{::}\PYG{n}{inner\PYGZus{}product}\PYG{p}{(}\PYG{n}{xs}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{(),} \PYG{n}{xs}\PYG{p}{.}\PYG{n}{end}\PYG{p}{(),}
+                   \PYG{n}{xs}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{(),} \PYG{l+m+mi}{0}\PYG{p}{);}
+\PYG{c+c1}{// \PYGZhy{}\PYGZgt{} alpha = 0 * 0 + 1 * 1 + 2 * 2 + 3 * 3 + ...}
+\PYG{c+c1}{// \PYGZhy{}\PYGZgt{} alpha = 328350}
+\end{Verbatim}

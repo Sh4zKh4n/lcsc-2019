@@ -1,0 +1,13 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{rng\PYGZus{}with\PYGZus{}big\PYGZus{}state} \PYG{o}{:} \PYG{k}{public} \PYG{n}{rng} \PYG{p}{\PYGZob{}}
+  \PYG{k}{public}\PYG{o}{:}
+    \PYG{n}{rng\PYGZus{}with\PYGZus{}big\PYGZus{}state}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+        \PYG{n}{state\PYGZus{}}  \PYG{o}{=} \PYG{k}{new} \PYG{n}{State}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{o}{\PYGZti{}}\PYG{n}{rng\PYGZus{}with\PYGZus{}big\PYGZus{}state}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{state\PYGZus{}}\PYG{p}{)} \PYG{p}{\PYGZob{}} \PYG{k}{delete} \PYG{n}{state\PYGZus{}}\PYG{p}{;} \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+  \PYG{k}{private}\PYG{o}{:}
+    \PYG{n}{State}\PYG{o}{*} \PYG{n}{state\PYGZus{}}\PYG{p}{;}
+\PYG{p}{\PYGZcb{};}
+\end{Verbatim}

@@ -1,0 +1,18 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{abstract} \PYG{p}{\PYGZob{}}
+  \PYG{k}{public}\PYG{o}{:}
+    \PYG{k}{virtual} \PYG{k+kt}{void} \PYG{n}{f}\PYG{p}{()} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{p}{\PYGZcb{};}
+
+\PYG{k}{class} \PYG{n+nc}{concrete} \PYG{o}{:} \PYG{k}{public} \PYG{n}{abstract} \PYG{p}{\PYGZob{}}
+  \PYG{k}{public}\PYG{o}{:}
+    \PYG{k+kt}{void} \PYG{n}{f}\PYG{p}{()} \PYG{k}{override} \PYG{p}{\PYGZob{}\PYGZcb{}}
+\PYG{p}{\PYGZcb{};}
+
+\PYG{n}{abstract} \PYG{n}{a}\PYG{p}{;} \PYG{c+c1}{// ERROR}
+\PYG{n}{concrete} \PYG{n}{b}\PYG{p}{;} \PYG{c+c1}{// fine}
+
+\PYG{k+kt}{void} \PYG{n+nf}{f}\PYG{p}{(}\PYG{n}{abstract}\PYG{o}{\PYGZam{}} \PYG{n}{a}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{n}{a}\PYG{p}{.}\PYG{n}{f}\PYG{p}{();} \PYG{c+c1}{// fine}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

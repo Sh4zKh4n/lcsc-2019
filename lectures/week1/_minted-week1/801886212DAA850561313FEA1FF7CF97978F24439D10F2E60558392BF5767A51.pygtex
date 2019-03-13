@@ -1,0 +1,6 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{int} \PYG{n}{x} \PYG{o}{=} \PYG{l+m+mi}{3}\PYG{p}{;}
+\PYG{k+kt}{int} \PYG{n}{z} \PYG{o}{=} \PYG{n}{x} \PYG{o}{+} \PYG{l+m+mi}{5}\PYG{p}{;} \PYG{c+c1}{// FINE!}
+\PYG{k+kt}{bool} \PYG{n}{a} \PYG{o}{=} \PYG{n+nb}{false}\PYG{p}{;}
+\PYG{k+kt}{bool} \PYG{n}{b} \PYG{o}{=} \PYG{n}{a} \PYG{o}{+} \PYG{l+m+mi}{3}\PYG{p}{;} \PYG{c+c1}{// ERROR!}
+\end{Verbatim}

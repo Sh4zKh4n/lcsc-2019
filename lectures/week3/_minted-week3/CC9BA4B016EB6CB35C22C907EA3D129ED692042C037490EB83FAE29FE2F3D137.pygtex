@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{template} \PYG{o}{\PYGZlt{}}\PYG{k+kt}{int} \PYG{n}{D}\PYG{p}{,} \PYG{k}{typename} \PYG{n}{T}\PYG{o}{\PYGZgt{}}
+\PYG{n}{std}\PYG{o}{::}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{std}\PYG{o}{::}\PYG{n}{array}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{p}{,} \PYG{n}{D}\PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{n}{generate\PYGZus{}points}\PYG{p}{(}
+    \PYG{k+kt}{int} \PYG{n}{count}\PYG{p}{,} \PYG{n}{distribution}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}\PYGZam{}} \PYG{n}{f}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{k}{return} \PYG{p}{...;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

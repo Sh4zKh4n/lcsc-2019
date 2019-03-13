@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{uint8\PYGZus{}t} \PYG{n}{x} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{n}{b00010010}\PYG{p}{;} \PYG{c+c1}{// 18}
+\PYG{k+kt}{uint8\PYGZus{}t} \PYG{n}{y} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{n}{b01010010}\PYG{p}{;} \PYG{c+c1}{// 82}
+\end{Verbatim}

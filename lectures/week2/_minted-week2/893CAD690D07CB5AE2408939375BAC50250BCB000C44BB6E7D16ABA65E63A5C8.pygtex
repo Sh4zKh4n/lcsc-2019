@@ -1,0 +1,8 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{uniform\PYGZus{}real\PYGZus{}distribution} \PYG{p}{\PYGZob{}}
+  \PYG{k}{public}\PYG{o}{:}
+    \PYG{n}{uniform\PYGZus{}real\PYGZus{}distribution}\PYG{p}{(}\PYG{k}{const} \PYG{n}{rng}\PYG{o}{\PYGZam{}} \PYG{n}{engine}\PYG{p}{)} \PYG{p}{\PYGZob{}} \PYG{p}{...} \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kt}{float} \PYG{n}{sample}\PYG{p}{()} \PYG{p}{\PYGZob{}} \PYG{p}{...} \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

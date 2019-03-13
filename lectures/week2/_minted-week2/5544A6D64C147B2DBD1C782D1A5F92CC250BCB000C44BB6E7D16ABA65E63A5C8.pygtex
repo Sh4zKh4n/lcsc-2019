@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{int} \PYG{n}{x} \PYG{o}{=} \PYG{l+m+mi}{3}\PYG{p}{;} \PYG{c+c1}{// integer allocated on the stack}
+
+\PYG{k+kt}{int}\PYG{o}{*} \PYG{n}{x} \PYG{o}{=} \PYG{k}{new} \PYG{k+kt}{int}\PYG{p}{;} \PYG{c+c1}{// integer allocated on the heap}
+\PYG{o}{*}\PYG{n}{x} \PYG{o}{=} \PYG{l+m+mi}{3}\PYG{p}{;}
+\PYG{k}{delete} \PYG{n}{x}\PYG{p}{;}
+\end{Verbatim}

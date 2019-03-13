@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{derived} \PYG{o}{:} \PYG{k}{public} \PYG{n}{base} \PYG{p}{...}
+\end{Verbatim}

@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{auto} \PYG{n}{r} \PYG{o}{=} \PYG{n}{lcrng}\PYG{p}{\PYGZob{}}\PYG{l+m+mi}{14239}\PYG{p}{,} \PYG{l+m+mi}{5205}\PYG{p}{,} \PYG{p}{(}\PYG{l+m+mi}{1} \PYG{o}{\PYGZlt{}\PYGZlt{}} \PYG{l+m+mi}{30}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}\PYG{p}{\PYGZcb{};}
+\PYG{n}{monte\PYGZus{}carlo}\PYG{p}{(}\PYG{n}{r}\PYG{p}{,} \PYG{p}{...)}
+\end{Verbatim}

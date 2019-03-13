@@ -1,0 +1,14 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{int} \PYG{n}{x} \PYG{o}{=} \PYG{l+m+mi}{3}\PYG{p}{;}
+\PYG{k+kt}{int}\PYG{o}{\PYGZam{}} \PYG{n}{y} \PYG{o}{=} \PYG{n}{x}\PYG{p}{;}
+\PYG{n}{y} \PYG{o}{=} \PYG{l+m+mi}{4}\PYG{p}{;}
+\PYG{n}{std}\PYG{o}{::}\PYG{n}{cout} \PYG{o}{\PYGZlt{}\PYGZlt{}} \PYG{n}{x} \PYG{o}{\PYGZlt{}\PYGZlt{}} \PYG{l+s}{\PYGZdq{}}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{;} \PYG{c+c1}{// \PYGZti{}\PYGZgt{} \PYGZdq{}4\PYGZdq{}}
+
+\PYG{k+kt}{void} \PYG{n+nf}{f}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{,} \PYG{k+kt}{int}\PYG{o}{\PYGZam{}} \PYG{n}{z}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{n}{z} \PYG{o}{=} \PYG{n}{x} \PYG{o}{*} \PYG{n}{x}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{k+kt}{int} \PYG{n}{z} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{n}{f}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,} \PYG{n}{z}\PYG{p}{);}
+\PYG{n}{std}\PYG{o}{::}\PYG{n}{cout} \PYG{o}{\PYGZlt{}\PYGZlt{}} \PYG{n}{z} \PYG{o}{\PYGZlt{}\PYGZlt{}} \PYG{l+s}{\PYGZdq{}}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{;} \PYG{c+c1}{// \PYGZti{}\PYGZgt{} \PYGZdq{}9\PYGZdq{}}
+\end{Verbatim}

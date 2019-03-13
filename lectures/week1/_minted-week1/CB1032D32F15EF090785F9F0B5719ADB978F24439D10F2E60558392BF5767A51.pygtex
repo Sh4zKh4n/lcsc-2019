@@ -1,0 +1,5 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{int} \PYG{n}{b}\PYG{p}{\PYGZob{}}\PYG{l+m+mf}{7.1}\PYG{p}{\PYGZcb{};} \PYG{c+c1}{// error!}
+\PYG{k+kt}{float} \PYG{n}{a}\PYG{p}{\PYGZob{}}\PYG{l+m+mf}{3.0}\PYG{p}{\PYGZcb{}} \PYG{c+c1}{// error!}
+\PYG{k}{auto} \PYG{n}{a} \PYG{o}{=} \PYG{l+m+mf}{12345.0}\PYG{p}{;} \PYG{c+c1}{// a is a double!}
+\end{Verbatim}

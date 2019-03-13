@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{x} \PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{l+m+mi}{2} \PYG{c+c1}{// \PYGZti{}\PYGZgt{} 0b00000100}
+\PYG{n}{x} \PYG{o}{\PYGZlt{}\PYGZlt{}} \PYG{l+m+mi}{2} \PYG{c+c1}{// \PYGZti{}\PYGZgt{} 0b01001000}
+\end{Verbatim}

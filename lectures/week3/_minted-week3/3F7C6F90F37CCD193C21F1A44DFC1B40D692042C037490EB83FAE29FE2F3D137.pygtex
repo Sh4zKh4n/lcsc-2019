@@ -1,0 +1,15 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{uniform\PYGZus{}real\PYGZus{}distribution} \PYG{p}{\PYGZob{}}
+  \PYG{k}{public}\PYG{o}{:}
+    \PYG{n}{uniform\PYGZus{}real\PYGZus{}distribution}\PYG{p}{(}\PYG{n}{rng}\PYG{o}{\PYGZam{}} \PYG{n}{engine}\PYG{p}{)}
+        \PYG{o}{:} \PYG{n}{engine\PYGZus{}}\PYG{p}{(}\PYG{n}{engine}\PYG{p}{)} \PYG{p}{\PYGZob{}\PYGZcb{}}
+
+    \PYG{k+kt}{float} \PYG{n}{sample}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+        \PYG{k}{return} \PYG{p}{(}\PYG{k+kt}{float}\PYG{p}{)}\PYG{n}{engine}\PYG{p}{.}\PYG{n}{next}\PYG{p}{()} \PYG{o}{/}
+            \PYG{p}{(}\PYG{n}{engine}\PYG{p}{.}\PYG{n}{max}\PYG{p}{()} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+
+  \PYG{k}{private}\PYG{o}{:}
+    \PYG{n}{rng}\PYG{o}{\PYGZam{}} \PYG{n}{engine\PYGZus{}}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

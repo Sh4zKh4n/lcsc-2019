@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{lcrng} \PYG{o}{:} \PYG{k}{public} \PYG{n}{rng} \PYG{p}{\PYGZob{}}
+    \PYG{p}{...}
+    \PYG{k+kt}{int} \PYG{n}{next}\PYG{p}{()} \PYG{k}{override} \PYG{p}{\PYGZob{}}
+        \PYG{k}{return} \PYG{p}{...;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{p}{...}
+\PYG{p}{\PYGZcb{};}
+\end{Verbatim}
