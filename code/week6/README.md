@@ -6,7 +6,7 @@ Conceptually, our LCSC library consists of a number of modules. So far, we have 
 
 This week, we will start our Monte Carlo module by implementing _hit or miss_ and _simple sampling_ for 1D functions.
 
-Compared to last week, this example code has the following changes:
+Compared to last week, this example code has the following _changes_:
 - Add `include/mc/mc.hpp`
 - Modify `include/lcsc.hpp` to contain `#include "mc/mc.hpp"`
 - Add `example/test_monte_carlo.cpp`
