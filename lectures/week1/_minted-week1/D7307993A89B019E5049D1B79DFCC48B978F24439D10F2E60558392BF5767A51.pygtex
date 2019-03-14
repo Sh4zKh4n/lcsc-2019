@@ -1,6 +1,0 @@
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{k+kt}{int} \PYG{n}{b} \PYG{o}{=} \PYG{l+m+mf}{7.1}\PYG{p}{;} \PYG{c+c1}{// no error!}
-\PYG{k+kt}{float} \PYG{n}{a} \PYG{o}{=} \PYG{l+m+mf}{3.0}\PYG{p}{;}
-\PYG{k+kt}{float} \PYG{n}{a} \PYG{o}{=} \PYG{l+m+mf}{312489012480918240.0}\PYG{p}{;}
-\PYG{k+kt}{float} \PYG{n}{a} \PYG{o}{=} \PYG{l+m+mf}{3124.0f}\PYG{p}{;}
-\end{Verbatim}

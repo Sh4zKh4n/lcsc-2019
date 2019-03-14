@@ -1,2 +1,6 @@
 build/
 ext/
+_minted*
+auto*
+week*.tex
+exercises.tex

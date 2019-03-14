@@ -1,8 +1,0 @@
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n}{std}\PYG{o}{::}\PYG{n}{transform}\PYG{p}{(}\PYG{n}{xs}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{(),} \PYG{n}{xs}\PYG{p}{.}\PYG{n}{end}\PYG{p}{(),} \PYG{n}{xs}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{(),}
-    \PYG{p}{[](}\PYG{k}{auto} \PYG{n}{i}\PYG{p}{)} \PYG{p}{\PYGZob{}} \PYG{k}{return} \PYG{n}{i} \PYG{o}{*} \PYG{n}{i}\PYG{p}{;} \PYG{p}{\PYGZcb{});}
-\PYG{c+c1}{// \PYGZhy{}\PYGZgt{} xs = [0, 1, 4, 9, ...]}
-
-\PYG{k}{auto} \PYG{n}{alpha} \PYG{o}{=} \PYG{n}{std}\PYG{o}{::}\PYG{n}{accumulate}\PYG{p}{(}\PYG{n}{xs}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{(),} \PYG{n}{xs}\PYG{p}{.}\PYG{n}{end}\PYG{p}{(),} \PYG{l+m+mi}{0}\PYG{p}{);}
-\PYG{c+c1}{// \PYGZhy{}\PYGZgt{} alpha = 328350}
-\end{Verbatim}

@@ -1,5 +1,0 @@
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n}{x} \PYG{o}{\PYGZca{}} \PYG{n}{y} \PYG{c+c1}{// XOR \PYGZti{}\PYGZgt{} 0b01000000}
-\PYG{n}{x} \PYG{o}{|} \PYG{n}{y} \PYG{c+c1}{// OR  \PYGZti{}\PYGZgt{} 0b01010010}
-\PYG{n}{x} \PYG{o}{\PYGZam{}} \PYG{n}{y} \PYG{c+c1}{// AND \PYGZti{}\PYGZgt{} 0b00010010}
-\end{Verbatim}

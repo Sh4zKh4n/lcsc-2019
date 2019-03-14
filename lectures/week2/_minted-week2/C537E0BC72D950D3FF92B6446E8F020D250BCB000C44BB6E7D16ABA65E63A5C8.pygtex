@@ -1,8 +1,0 @@
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{x} \PYG{o}{=} \PYG{l+m+mi}{3}\PYG{p}{;}
-\PYG{n}{x} \PYG{o}{=} \PYG{l+m+mi}{5}\PYG{p}{;} \PYG{c+c1}{// ERROR}
-
-\PYG{k+kt}{int} \PYG{n+nf}{f}\PYG{p}{(}\PYG{k}{const} \PYG{k+kt}{int}\PYG{o}{\PYGZam{}} \PYG{n}{x}\PYG{p}{)} \PYG{p}{\PYGZob{}}
-    \PYG{k}{return} \PYG{n}{x} \PYG{o}{*} \PYG{n}{x}\PYG{p}{;}
-\PYG{p}{\PYGZcb{}}
-\end{Verbatim}
