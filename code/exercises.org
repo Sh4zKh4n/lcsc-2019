@@ -215,7 +215,7 @@ We will write the unit (hyper)sphere as $\Omega_d$.
 In an X-ray imaging experiment, penetrating radiation is emitted from various point
 sources. The intensity of this radiation decreases with one over the 
 distance to the point source squared. In this exercise, we want to estimate the total
-amount of radiation for a given cuboid region:
+amount of radiation for a given /cuboid/ region:
 $$V \equiv [x_1, x_2] \times [y_1, y_2] \times [z_1, z_2] \subset \mathbb{R}^3,$$
 for a collection of source positions:
 $$S = \{ \vec{s}_1, \ldots, \vec{s}_n \}, \quad \vec{s}_i \in \mathbb{R}^3.$$
@@ -239,7 +239,7 @@ $$S = \{ \vec{s}_1, \ldots, \vec{s}_n \}, \quad \vec{s}_i \in \mathbb{R}^3.$$
 4. /(Bonus)/ What if we are interested in splitting $V$ along, say, the $x\text{-axis}$
   into two parts that receive the same total radiation. In other words, we want
   to find a $x_1 < c < x_2$ so that:
-  $$\int_{x_1}^c \int_{y_1}^{y_2}  \int_{z_1}^{z_2} \frac{1}{||\vec{x} - \vec{s}_i||^2}~dz~dy~dx = \int_{c}^{x_2}  \int_{y_1}^{y_2} \int_{z_1}^{z_2} \frac{1}{||\vec{x} - \vec{s}_i||^2}~dz~dy~dx.$$
+  $$\sum_{i = 1}^n \int_{x_1}^c \int_{y_1}^{y_2}  \int_{z_1}^{z_2} \frac{1}{||\vec{x} - \vec{s}_i||^2}~dz~dy~dx = \sum_{i = 1}^n \int_{c}^{x_2}  \int_{y_1}^{y_2} \int_{z_1}^{z_2} \frac{1}{||\vec{x} - \vec{s}_i||^2}~dz~dy~dx.$$
   Develop a general stategy for finding $c$. Compute $c$ for the two sets of source
   positions of the previous exercise, for the region $V = [-1, \frac{1}{2}]^3$.
      
