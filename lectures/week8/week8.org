@@ -204,3 +204,4 @@ report.save_latex("results.tex");
 - Header-only libraries contain all the implementations in the header, you
   compile their code as part of your own program. This is common for heavily
   templated libraries.
+- In today's tutorial code, you can find an example of how to use an external JSON library.
