@@ -1,0 +1,62 @@
+\usepackage{amsthm}
+\usepackage[T1]{fontenc}
+\usepackage[scaled]{beramono}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{pgf}
+\usepackage{tikz}
+\usepackage{epigraph}
+\usepackage{hyperref}
+\usepackage{subcaption}
+\usepackage{aliascnt}
+\usepackage{xcolor}
+\usepackage{geometry}
+\geometry{margin = 4cm}
+\definecolor{lightblue}{HTML}{27aae1}
+\definecolor{lightred}{HTML}{e12727}
+\hypersetup{colorlinks, linkcolor=lightred, urlcolor=lightblue}
+\urlstyle{tt}
+\let\vec\mathbf
+\renewcommand{\rule}[2]{\hrulefill}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\newtheoremstyle{custom}
+  {0.5 cm}
+  {0.5 cm}
+  {}
+  {}
+  {\bfseries}
+  {.}
+  {.5em}
+  {}
+\theoremstyle{custom}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{example}{Example}
+\numberwithin{theorem}{section}
+\numberwithin{definition}{section}
+\numberwithin{lemma}{section}
+\numberwithin{proposition}{section}
+\numberwithin{corollary}{section}
+\numberwithin{example}{section}
+\newcommand{\R}{\mathcal{R}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\vx}{\vec{x}}
+\newcommand{\vroi}{\vec{x}_{\textsc{roi}}}
+\newcommand{\vout}{\vec{x}_{\textsc{out}}}
+\newcommand{\Aroi}{A_{\textsc{roi}}}
+\newcommand{\Aout}{A_{\textsc{out}}}
+\newcommand{\Aapprox}{A_{\square}}
+\newcommand{\vy}{\vec{y}}
+\newcommand{\vz}{\vec{z}}
+\newcommand{\vb}{\vec{b}}
+\newcommand{\Id}{\text{Id}}
+\newcommand{\tmin}{\text{min}}
+\newcommand{\targmin}{\text{argmin}}
+\newcommand{\tmax}{\text{max}}
+\newcommand{\targmax}{\text{argmax}}
+\newcommand{\room}{\hspace{0.6 cm}}
