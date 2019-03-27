@@ -190,9 +190,9 @@ $d$ dimensions: 1) simple sampling Monte Carlo and 2) low-discrepancy sampling.
 We will write the unit (hyper)sphere as $\Omega_d$.
 
 1. The volume $V_d$ of $\Omega_d$ can be written as:
-   $$\int_{-1}^1 \cdots \int_{-1}^1 \mathbb{1}_{x_1^2 + \cdots + x_d^2 \leq 1}~dx_d \cdots dx_1,$$
+   $$\int_{-1}^1 \cdots \int_{-1}^1 \mathbb{I}_{x_1^2 + \cdots + x_d^2 \leq 1}~dx_d \cdots dx_1,$$
    
-   where $\mathbb{1}$ is an indicator function. Explain why there is no
+   where $\mathbb{I}$ is an indicator function. Explain why there is no
    difference between simple sampling and hit-or-miss Monte Carlo for this
    integral.
 
@@ -253,3 +253,4 @@ $$S = \{ \vec{s}_1, \ldots, \vec{s}_n \}, \quad \vec{s}_i \in \mathbb{R}^3.$$
     $$\int \frac{1}{a^2 + x^2}~dx = \frac{1}{a} \arctan \left( \frac{x}{a} \right).$$
   - Addition formula for the arctangent:
     $$\arctan(u) \pm \arctan(v) = \arctan\left(\frac{u \pm v}{1 \mp uv}\right) \pmod \pi \, , \quad u v \ne 1 $$
+  - For the bonus exercise, one approach could be to use $\frac{d}{dc} \int_a^c f(x) dx = f(c)$.
