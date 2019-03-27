@@ -1,5 +1,4 @@
 #+LATEX_HEADER: \usepackage{amsthm}
-#+LATEX_HEADER: \usepackage{bbold}
 
 * Exercises
 ** Week 1
@@ -230,6 +229,8 @@ $$S = \{ \vec{s}_1, \ldots, \vec{s}_n \}, \quad \vec{s}_i \in \mathbb{R}^3.$$
    consider two different sets of source positions:
    - $n$ equidistant points on a circle around the $x-\text{axis}$ with radius $2$
    - $n$ equidistant points on a helix around the $x-\text{axis}$ with radius $2$, and height $2$.
+
+   (A realistic choice is $n = 100$).
    
 3. Report on the efficiency and quality of your method.
    - What is a good value for the number of (sample) points.
