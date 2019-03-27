@@ -36,4 +36,18 @@ The `scripts` folder contains an example to convert a JSON file saved by the `re
 
 ## Using an external library
 
-This code uses an external JSON library. In this Git repository, this is managed through a submodule. Alternatively, you can download a Zip of the library at <https://github.com/nlohmann/json/>, and store it in `ext/json`. This dependency is managed through CMake.
+This code uses an external JSON library. In this Git repository, this is managed
+through a submodule. Alternatively, you can download a Zip of the library at
+<https://github.com/nlohmann/json/>, and store it in `ext/json`. This dependency
+is managed through CMake.
+
+To manage a external Git repository as a submodule to your own Git repository, you can use a command such as:
+
+```
+git submodule add https://www.github.com/jwbuurlage/Bulk.git ext/bulk
+```
+
+Then a user of your library can obtain your dependencies by cloning your repository, and then calling:
+```
+git submodule update --init --recursive
+```
