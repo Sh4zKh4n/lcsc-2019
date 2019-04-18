@@ -289,7 +289,7 @@ In this exercise, we will write code that implements a number of interesting ran
      defined in the Python docs.
    - It should (gracefully) disallow a =step= of zero.
    
-2. Next, we want take the range function and implement for higher dimensions.
+2. Next, we want take the range function and implement it for higher dimensions.
    Implement a template:
    #+BEGIN_SRC cpp
      template <int D>
