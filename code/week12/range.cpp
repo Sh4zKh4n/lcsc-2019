@@ -17,7 +17,7 @@ class range {
         // dereferencing the iterator simply returns the iterate
         auto operator*() { return x_; }
 
-        // two iterators are unequal iff there iterate is unequal
+        // two iterators are unequal iff their iterates are unequal
         bool operator!=(iterator& other) { return x_ != other.x_; }
 
       private:

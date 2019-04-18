@@ -25,8 +25,8 @@
 * The =<random>= standard library
 
 - There is a standard library for generating random numbers, =<random>=
-- It is enlightning to compare the design of that library, with the library we have
-  been developing in this course.
+- It might be enlightening to compare the design of that library, with the
+  library we have been developing in this course.
 - Today, I will give an overview of this library.
 
 * High-level overview
@@ -51,7 +51,7 @@
 * =linear_congruential_engine=
 
 #+BEGIN_SRC cpp
-template<class T, T a, T c, T m>
+template <class T, T a, T c, T m>
 class linear_congruential_engine;
 #+END_SRC
 
@@ -112,7 +112,7 @@ f(engine());
     - ...  
 - The distributions are constructed independent from an engine, but engines are
   passed when sampling the distribution.
-
+  
 * =uniform_int_distribution=
 
 - For example, let us look at a uniform integer distribution.
@@ -160,7 +160,7 @@ auto engine = std::mt19937(rd());
 * Conclusion
 
 - Note that we did not talk about any implementation! Only about the design of the
-standard libray.
+  standard library.
 - The design of =<random>= is much like ours:
     - Parameters chosen at runtime or compile time, and therefore **predefined engines** through specialization or type aliases.
     - Both libraries keep concepts such as distributions and engines
