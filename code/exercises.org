@@ -254,7 +254,35 @@ $$S = \{ \vec{s}_1, \ldots, \vec{s}_n \}, \quad \vec{s}_i \in \mathbb{R}^3.$$
   - Addition formula for the arctangent:
     $$\arctan(u) \pm \arctan(v) = \arctan\left(\frac{u \pm v}{1 \mp uv}\right) \pmod \pi \, , \quad u v \ne 1 $$
   - For the bonus exercise, one approach could be to use $\frac{d}{dc} \int_a^c f(x) dx = f(c)$.
-** COMMENT Week 12
+    
+** Week 12
+
+*** Designing a GA library
+Make a list (on a piece of paper) of all the different concepts that are
+relevant for GAs. What would be a good class structure for a GA library? How can
+a user customize the behaviour?
+*** Representing chromosomes
+A candidate solution can be represented by a =chromosome= object. 
+Many candidate solutions can be represented as a bitstring.
+
+There are multiple design options:
+   - Only bitstrings are allowed for chromosomes, and your GA library only
+     manipulates bitstrings.
+   - =bitstring= inherits from an abstract base class =chromosome=.
+   - Bitstrings and chromosomes are completely independent. There is a
+     =bitstring_chromosome= that inherits from =chromosome=, which holds a
+     =bitstring= as a private member.
+   
+1. Describe how subsets, permutations and different numerical values can be
+   represented as a bitstring. 
+2. List advantages and disadvantages for each of these design option.
+3. Design and implement a =bitstring= type (and/or a chromosome type). What methods
+   should it support?
+*** A genetic algorithm loop
+ Make a mock implementation of Algorithm 4.1 in C++. Use the
+user-defined types that you have designed in (11.1). Define the signature of the
+auxiliary functions that you will need.
+** COMMENT Week 13
 *** (Hand-in) Iterating over your own classes
 A range-based for loop in C++
 #+BEGIN_SRC cpp
