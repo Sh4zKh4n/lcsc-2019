@@ -1,0 +1,164 @@
+#+TITLE: Genetic Algorithms (I)
+#+AUTHOR: WISM454 Laboratory Class Scientific Computing, Jan-Willem Buurlage
+#+EMAIL: j.buurlage@cwi.nl
+
+# Beamer specific:
+#+startup: beamer
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [10pt]
+#+BEAMER_FRAME_LEVEL: 2
+#+BEAMER_THEME: metropolis [progressbar=head]
+#+OPTIONS: H:2
+#+OPTIONS: toc:nil
+
+# CI CWI theme specific:
+#+LATEX_HEADER: \usepackage{tikz}
+#+LATEX_HEADER: \definecolor{cwiRed}{HTML}{BF1238}
+#+LATEX_HEADER: \definecolor{cwiBlue}{HTML}{0B5D7D}
+#+LATEX_HEADER: \setbeamertemplate{footline}[text line]{%
+#+LATEX_HEADER:   \parbox{\linewidth}{\noindent\vspace*{2pt}\noindent\rule{\linewidth}{0.4pt}\\{\scriptsize\noindent\vspace*{7pt}\insertshortauthor\hfill\insertshorttitle\hfill\insertdate}}
+#+LATEX_HEADER: }
+#+LATEX_HEADER: \renewcommand*\footnoterule{}
+#+LATEX_HEADER: \renewcommand{\vec}[1]{\mathbf{#1}}
+#+LATEX_HEADER: \usepackage{lmodern}
+
+
+* GAs
+** Optimization Problems
+
+- **Optimization problem**: find the best solution from a set of candidates.
+- Optimality is with respect to some _objective function_
+  $$f: \mathcal{D} \to \mathbb{R}.$$
+  where $\mathcal{D}$ is a set of candidate solutions.
+- An optimization problem is expressed as:
+  $$\text{argmax}_{x \in \mathcal{D}}~f(x).$$
+- Equivalently, we can consider minimization:
+  $$\text{argmin}_{x \in \mathcal{D}}~\left( -f(x) \right).$$
+
+** Example (I): Linear systems
+
+\begin{figure}
+\includegraphics[width=0.65\textwidth]{projection.pdf}
+\end{figure}
+
+- Tomography: $A \vec{x} = \vec{b}$
+- $A$ the physics, $\vec{x}$ the object, $\vec{b}$ the noisy measurements
+
+** Example (I): Linear systems
+
+- Let $A: \mathbb{R}^{m \times n}$ be some matrix, and let $\mathcal{D}$ be
+  $\mathbb{R}^n$.
+- For some $\vec{b} \in \mathbb{R}^m$, finding a least-squares solution:
+  $$\text{argmin}_{\vec{x} \in \mathbb{R}^n}~|| A \vec{x} - \vec{b} ||_2^2,$$
+  is an example of an optimization problem.
+- Linear problems like this have a lot of structure.
+
+** Example (II): Knapsack
+
+#+ATTR_LATEX: :height 0.8\textheight
+[[./knapsack.png]]
+
+** Example (II): Knapsack
+
+- We are given a collection of $m$ objects with weights $w_0, \ldots, w_{m -
+  1}$, and a knapsack which can carry a weight of $M$.
+- Which objects should we take to be as close to the maximum weight as
+  possible?
+- A bitstring $\vec{b}$ of length $m$ can encode which objects we are taking.
+- Here, the total weight $W$ of a collection of objects is the objective
+  function, and $\mathcal{D}' = \{ \vec{b}~|~W(\vec{b}) \leq M \}$:
+$$\text{argmax}_{\vec{b} \in \mathcal{D}'}~W(\vec{b}).$$
+
+** Example (III): TSP
+
+#+ATTR_LATEX: :height 0.8\textheight
+[[./tsp.png]]
+
+** Example (III): TSP
+
+- A path in a graph (i.e. sequence of edges) is called Hamiltonian if it visits every vertex exactly once.
+- The _traveling salesman problem_ (TSP) is to find the shortest Hamiltonian path of a
+  complete graph.
+- Note that if there are $n$ vertices, the set of permutations of $\{ 1, \ldots,
+  n \}$ is in 1-1 correspondence with the set of Hamiltonian paths.
+- Let $D(\pi)$ be the total length of a path $\pi$. The TSP can be expressed as:
+$$\text{argmin}_{\pi \in \text{Aut}(\{1, \ldots, n \})}~D(\pi).$$
+  
+** Fitness landscape
+
+#+ATTR_LATEX: :height 0.8\textheight
+[[./fitness_landscape.pdf]]
+
+** Genetic algorithms
+
+- Genetic algorithms (GAs) are a general way to solve optimization problems.
+- The main advantage: virtually no restrictions on $f$! (e.g. continuous, differentiable, ...)
+- GAs mimic evolution as it happens in nature. A finite subset of $\mathcal{D}$, the
+  candidate solutions, is evolved through several generations.
+- _Good_ current candidates survive, and combine to hopefully create even better candidates.
+
+** GA notions
+
+- We denote a generation by
+$$\mathcal{G} = \{ x_1, \ldots, x_n \} \subset \mathcal{D}.$$
+- $x_j \in \mathcal{G}$ are the _members_ or _chromosomes_ of the generation.
+- Three main operations: _selection_, _combination_ and _mutation_.
+- Starting from a usually random initial generation, these three steps define
+  the evolution.
+- Short overview today (but enough information to start designing our software!), more details next week.
+
+** GA overview
+
+#+ATTR_LATEX: :height 0.8\textheight
+[[./ga.pdf]]
+
+** 1. Selection
+
+- To _select_ the best candidates of the current generation, we can simply
+  evaluate the objective function.
+- However, the best and worst members can have very similar objective values!
+- Instead **ranking**, or **scaling** is a better metric for defining the _fitness_
+  of a solution.
+- Typically, the members that are selected to survive in each generation are
+  chosen randomly, but biased to the _fittest_ members.
+- For example, using a discrete distribution (with pdf of fitness divided by total fitness)!
+
+** 2. Combination
+
+- After a number of members have been selected to survive, a number of these
+  survivors will be selected for **reproduction**.
+- Pairs of survivors, e.g. $x_0$ and $x_1$, generate offspring using some
+  combination operator $\mathcal{C}$:
+  $$(y_0, y_1) = \mathcal{C}(x_0, x_1).$$
+- Many choices for $\mathcal{C}$, e.g. crossover.
+
+** 3. Mutation
+
+- The survivors and their offspring together make up the next generation.
+- They are also subjected to _mutation_, which can be seen as **small changes to
+  the solutions**. For example, low probability flips if the solution is represented as a bitstring.
+- This keeps the current generation 'diverse'.
+
+** Summary of GAs
+
+- Optimization problems are very _common_ in applied mathematics.
+- Genetic algorithms are a _strategy for solving these problems_, without
+  requiring any structure.
+- They are very _general_, but because they do not use the structure of e.g. the
+  objective function, they can be less efficient than tailored methods.
+
+** Exercises (designing a GA library)
+
+_First, read the lecture notes up to and including 4.1.2._
+
+**(12.1)** Make a list (on a piece of paper) of all the different concepts that
+are relevant for GAs. What would be a good class structure for a GA library?
+What are the customization points?
+
+**(12.2)** Many candidate solutions can be represented as a bitstring. Describe
+how subsets, permutations and different numerical values can be represented.
+Design and implement a `bitstring` type. What methods should it support?
+
+**(12.3)** Make a mock implementation of Algorithm 4.1 in C++. Use the
+user-defined types that you have designed in (11.1). Define the signature of the
+auxiliary functions that you will need.
