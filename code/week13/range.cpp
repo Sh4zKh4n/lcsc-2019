@@ -9,7 +9,7 @@ class range {
         iterator(int x) : x_(x) {}
 
         // we increase the iterate
-        auto& operator++() {
+        auto operator++() {
             ++x_;
             return *this;
         }
