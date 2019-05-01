@@ -413,6 +413,8 @@ uses a =ranges= library which is included using =#include <ranges.hpp>=, and a
 Here, =ranges= is a library target that should be defined in a CMake file by
 you, and =ext/ranges= is where I will unzip your zip.
 
+Define your library in a namespace called =ranges=.
+
 Making it easy for others to use the libraries that you develop is important
 Your grade for this hand-in will be heavily influenced by how many tests your
 code passes, how efficient your code is, and if you are able to set up your
