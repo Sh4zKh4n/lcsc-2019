@@ -282,7 +282,22 @@ There are multiple design options:
  Make a mock implementation of Algorithm 4.1 in C++. Use the
 user-defined types that you have designed in (11.1). Define the signature of the
 auxiliary functions that you will need.
-** COMMENT Week 13
+** Week 13
+*** Implementing your GA library
+Design and implement a flexible framework for genetic algorithms; including
+selection, crossover, and mutation operations. At minimum, have predefined
+implementations of roulette selection, uniform crossover, and bit flip mutations.
+*** [LN 4.7] Elitism
+Add support for elitism to your GA implementation.
+*** [LN 4.10+] Prove correctness of Algorithm 4.2 
+Prove that $\chi$ is a bijection, and that this indeed gives a Gray encoding.
+  Give also an implementation using bitwise operations.
+*** [LN 4.11] Gray codes.
+Add support for Gray coded bitstrings using the bitwise operations that you
+found in the previous exercise.
+
+/Hint:/ there are multiple choices; such as subclassing =lcsc::bitstring=, or
+  add a boolean flag to it (=is_gray_encoded=). What suits your design the best?
 *** (Hand-in) Iterating over your own classes
 A range-based for loop in C++
 #+BEGIN_SRC cpp
@@ -302,8 +317,8 @@ access through range-based for loops.
 In this exercise, we will write code that implements a number of interesting ranges.
 
 1. In the =code/week12= folder you can find an implementation of =range(n)= which is a
-   virtual container from $\{0, ..., n - 1 \}$. In Python, a range is defined
-   as:
+   virtual container from $\{0, ..., n - 1 \}$. In Python, a range is created
+   using:
    #+BEGIN_SRC python
    range(start, stop[, step])
    #+END_SRC
@@ -344,6 +359,8 @@ In this exercise, we will write code that implements a number of interesting ran
    1, 0
    1, 1
    #+END_SRC
+   Note that it should be sorted first by the $0\text{th}$ coordinate, then by
+   the $1\text{st}$, and so on.
    
 3. Again, we want to implement a standard library feature from Python in C++.
    You can do:
@@ -372,3 +389,27 @@ In this exercise, we will write code that implements a number of interesting ran
    2: 6
    3: 8
    #+END_SRC
+   
+/Instructions:/ you only have to hand-in (optionally commented) code for this
+hand-in. /This should be completely independent from your LCSC library project/.
+It should support the following behaviour. I have have written a test file that
+uses a =ranges= library which is included using =#include <ranges.hpp>=, and a
+=CMakeLists.txt= that compiles this test file as follows:
+
+#+BEGIN_SRC cmake
+  cmake_minimum_required(VERSION 3.8)
+  project(test_range)
+
+  add_subdirectory("ext/ranges")
+  add_executable(test_range "test_range.cpp")
+
+  target_link_libraries(test_range ranges)
+#+END_SRC
+
+Here, =ranges= is a library target that should be defined in a CMake file by
+you, and =ext/ranges= is where I will unzip your zip.
+
+Making it easy for others to use the libraries that you develop is important
+Your grade for this hand-in will be heavily influenced by how many tests your
+code passes, how efficient your code is, and if you are able to set up your
+library with CMake correctly according to the above use-case.
