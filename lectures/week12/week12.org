@@ -23,13 +23,13 @@
 #+LATEX_HEADER: \usepackage{lmodern}
 
 
-* GAs
+* Genatic Algorithms
 ** Optimization Problems
 
 - **Optimization problem**: find the best solution from a set of candidates.
-- Optimality is with respect to some _objective function_
+- Optimality is with respect to some /objective function/
   $$f: \mathcal{D} \to \mathbb{R}.$$
-  where $\mathcal{D}$ is a set of candidate solutions.
+  where $\mathcal{D}$ is a set of /candidate solutions/.
 - An optimization problem is expressed as:
   $$\text{argmax}_{x \in \mathcal{D}}~f(x).$$
 - Equivalently, we can consider minimization:
@@ -51,6 +51,9 @@
 - For some $\vec{b} \in \mathbb{R}^m$, finding a least-squares solution:
   $$\text{argmin}_{\vec{x} \in \mathbb{R}^n}~|| A \vec{x} - \vec{b} ||_2^2,$$
   is an example of an optimization problem.
+- Can add /regularization/:
+  $$\text{argmin}_{\vec{x} \in \mathbb{R}^n}~|| A \vec{x} - \vec{b} ||^2_2 +
+  \lambda ||\vec{x}||_2,$$
 - Linear problems like this have a lot of structure.
 
 ** Example (II): Knapsack
@@ -67,7 +70,7 @@
 - A bitstring $\vec{b}$ of length $m$ can encode which objects we are taking.
 - Here, the total weight $W$ of a collection of objects is the objective
   function, and $\mathcal{D}' = \{ \vec{b}~|~W(\vec{b}) \leq M \}$:
-$$\text{argmax}_{\vec{b} \in \mathcal{D}'}~W(\vec{b}).$$
+  $$\text{argmax}_{\vec{b} \in \mathcal{D}'}~W(\vec{b}).$$
 
 ** Example (III): TSP
 
@@ -77,7 +80,7 @@ $$\text{argmax}_{\vec{b} \in \mathcal{D}'}~W(\vec{b}).$$
 ** Example (III): TSP
 
 - A path in a graph (i.e. sequence of edges) is called Hamiltonian if it visits every vertex exactly once.
-- The _traveling salesman problem_ (TSP) is to find the shortest Hamiltonian path of a
+- The /traveling salesman problem/ (TSP) is to find the shortest Hamiltonian path of a
   complete graph.
 - Note that if there are $n$ vertices, the set of permutations of $\{ 1, \ldots,
   n \}$ is in 1-1 correspondence with the set of Hamiltonian paths.
@@ -95,14 +98,14 @@ $$\text{argmin}_{\pi \in \text{Aut}(\{1, \ldots, n \})}~D(\pi).$$
 - The main advantage: virtually no restrictions on $f$! (e.g. continuous, differentiable, ...)
 - GAs mimic evolution as it happens in nature. A finite subset of $\mathcal{D}$, the
   candidate solutions, is evolved through several generations.
-- _Good_ current candidates survive, and combine to hopefully create even better candidates.
+- /Good/ current candidates survive, and combine to hopefully create even better candidates.
 
 ** GA notions
 
 - We denote a generation by
-$$\mathcal{G} = \{ x_1, \ldots, x_n \} \subset \mathcal{D}.$$
-- $x_j \in \mathcal{G}$ are the _members_ or _chromosomes_ of the generation.
-- Three main operations: _selection_, _combination_ and _mutation_.
+  $$\mathcal{G} = \{ x_1, \ldots, x_n \} \subset \mathcal{D}.$$
+- $x_j \in \mathcal{G}$ are the /members/ or /chromosomes/ of the generation.
+- Three main operations: *selection*, *combination* and *mutation*.
 - Starting from a usually random initial generation, these three steps define
   the evolution.
 - Short overview today (but enough information to start designing our software!), more details next week.
@@ -114,13 +117,13 @@ $$\mathcal{G} = \{ x_1, \ldots, x_n \} \subset \mathcal{D}.$$
 
 ** 1. Selection
 
-- To _select_ the best candidates of the current generation, we can simply
+- To /select/ the best candidates of the current generation, we can simply
   evaluate the objective function.
 - However, the best and worst members can have very similar objective values!
-- Instead **ranking**, or **scaling** is a better metric for defining the _fitness_
+- Instead **ranking**, or **scaling** is a better metric for defining the /fitness/
   of a solution.
 - Typically, the members that are selected to survive in each generation are
-  chosen randomly, but biased to the _fittest_ members.
+  chosen randomly, but biased to the /fittest/ members.
 - For example, using a discrete distribution (with pdf of fitness divided by total fitness)!
 
 ** 2. Combination
@@ -135,16 +138,16 @@ $$\mathcal{G} = \{ x_1, \ldots, x_n \} \subset \mathcal{D}.$$
 ** 3. Mutation
 
 - The survivors and their offspring together make up the next generation.
-- They are also subjected to _mutation_, which can be seen as **small changes to
+- They are also subjected to /mutation/, which can be seen as **small changes to
   the solutions**. For example, low probability flips if the solution is represented as a bitstring.
 - This keeps the current generation 'diverse'.
 
 ** Summary of GAs
 
-- Optimization problems are very _common_ in applied mathematics.
-- Genetic algorithms are a _strategy for solving these problems_, without
+- Optimization problems are very /common/ in applied mathematics.
+- Genetic algorithms are a /strategy for solving these problems/, without
   requiring any structure.
-- They are very _general_, but because they do not use the structure of e.g. the
+- They are very /general/, but because they do not use the structure of e.g. the
   objective function, they can be less efficient than tailored methods.
 
 ** Exercises (designing a GA library)
