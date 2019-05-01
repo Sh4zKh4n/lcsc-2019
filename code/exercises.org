@@ -412,4 +412,4 @@ you, and =ext/ranges= is where I will unzip your zip.
 Making it easy for others to use the libraries that you develop is important
 Your grade for this hand-in will be heavily influenced by how many tests your
 code passes, how efficient your code is, and if you are able to set up your
-library with CMake correctly according to the above use-case.
+library with CMake correctly according to the above use case.
