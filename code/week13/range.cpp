@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include "ranges.hpp"
+
 class range {
   public:
     // this nested class is an iterator over the range
@@ -34,7 +36,7 @@ class range {
     auto end() { return iterator(n_); }
 
   private:
-    int n_;
+    int n_ = 0;
 };
 
 int main() {
