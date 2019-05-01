@@ -362,6 +362,10 @@ In this exercise, we will write code that implements a number of interesting ran
    Note that it should be sorted first by the $0\text{th}$ coordinate, then by
    the $1\text{st}$, and so on.
    
+   It should also support =stop=, and =step= like =range=, but these can simply
+   be integers so that we assume each coordinate is in the same set, for
+   simplicity.
+   
 3. Again, we want to implement a standard library feature from Python in C++.
    You can do:
    #+BEGIN_SRC python
