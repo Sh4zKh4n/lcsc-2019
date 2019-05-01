@@ -50,13 +50,13 @@
 ** Fitness
 
 - The _fitness_ of a member $x_i$, is a measure for its relative performance in the
-  current generation.
+  current generation (higher is more fit).
 - The fitness is always a function of the objective value $f(x_i)$.
     1. Subtract maximum (if known):
-    $$F(x) = f(x) - \max_{t \in \mathcal{D}} f(t)$$
+       $$F(x) = f(x) - \max_{t \in \mathcal{D}} f(t)$$
     2. Scale objective values of current members in $[a, b]$:
-    $$F(x) = a + (b - a)\left( \frac{f(x) - f_-}{f_+ - f_-} \right).$$
-    What impact does the choice of $a$ and $b$ have?
+       $$F(x) = a + (b - a)\left( \frac{f(x) - f_-}{f_+ - f_-} \right).$$
+       What impact does the choice of $a$ and $b$ have?
     3. _ranking_. Sort the candidate solutions by ascending objective values, and
       assign as fitness their position in the sorted list.
 
@@ -65,7 +65,8 @@
 - Determine which members from the current generation survive to the next.
 - Based on the _fitness_ of individuals.
     1. _Fitness proportional selection_ is based on the discrete distribution: given $n$ outcomes, with weights $w_i$, define:
-    $$P(i) = w_i / \left( \sum_j w_j \right).$$
+      $$P(i) = w_i / \left( \sum_j w_j \right).$$
+      Also called /roulette selection/.
     2. _Tournament selection_ randomly select a pair of members and have them 'face off'.
        The fittest wins, and survives to the next generation.
 
@@ -155,7 +156,7 @@ $\chi(32)$: & 1 & 1 & 0 & 0 & 0 & 0
 - If _elitism_ is used, the $k$ best members of a generation always survive and
   are immune to mutation.
 
-** Schemata
+** Analysis of GAs: Schemata
 
 - Bitstrings are words over the alphabet $\{0, 1\}$. This set is written $\{0, 1\}^*$.
 - Schemata are words in $\{0, 1, \bullet\}^*$, where $\bullet$ represents a wildcard.
