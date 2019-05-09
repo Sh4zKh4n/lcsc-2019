@@ -333,7 +333,7 @@ In this exercise, we will write code that implements a number of interesting ran
    - It should (gracefully) disallow a =step= of zero.
    
 2. Next, we want take the range function and implement it for higher dimensions.
-   Implement a template:
+   Implement a class template:
    #+BEGIN_SRC cpp
      template <int D>
      class grid { ... }
@@ -360,14 +360,16 @@ In this exercise, we will write code that implements a number of interesting ran
    1, 1
    #+END_SRC
    Note that it should be sorted first by the $0\text{th}$ coordinate, then by
-   the $1\text{st}$, and so on.
+   the $1\text{st}$, and so on. If =step= is positive, it should be sorted in
+   ascending order (like the example), if =step= is negative it should be sorted
+   in descending order.
    
-   It should also support =stop=, and =step= like =range=, but these can simply
-   be integers so that we assume each coordinate is in the same set, for
-   simplicity.
+   It should also (optionally) support =start=, =stop=, and =step= like =range=.
+   However, these arguments can simply be integers so that we assume each
+   coordinate is in the same set, for simplicity.
    
 3. Again, we want to implement a standard library feature from Python in C++.
-   You can do:
+   In Python, you can write:
    #+BEGIN_SRC python
    for i, x in enumerate(xs):
      print(i, x)
@@ -393,6 +395,10 @@ In this exercise, we will write code that implements a number of interesting ran
    2: 6
    3: 8
    #+END_SRC
+   
+   /Note:/ the template parameter to =enumerate= is automatically deduced (to
+   =range=) by the constructor call. This only works in C++17.
+
    
 /Instructions:/ you only have to hand-in (optionally commented) code for this
 hand-in. /This should be completely independent from your LCSC library project/.
