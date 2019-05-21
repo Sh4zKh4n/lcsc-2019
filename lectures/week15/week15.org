@@ -43,6 +43,11 @@ TEST_CASE("Basic range", "[range]")
     REQUIRE(xs == std::vector<int>{0, 1, 2, 3});
 }
 #+END_SRC
+* Catch through CMake
+#+BEGIN_SRC cmake
+add_subdirectory("ext/catch2")
+target_link_libraries(test_XYZ Catch2::Catch2)
+#+END_SRC
 * Example output
 #+BEGIN_SRC bash
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
