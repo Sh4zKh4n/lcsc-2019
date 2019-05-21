@@ -1,3 +1,6 @@
 [submodule "code/week8/ext/json"]
 	path = code/week8/ext/json
 	url = https://github.com/nlohmann/json.git
+[submodule "code/week15/ext/catch2"]
+	path = code/week15/ext/catch2
+	url = https://github.com/catchorg/Catch2.git
